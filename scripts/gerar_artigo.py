@@ -166,6 +166,8 @@ Regras obrigatorias:
 # ── Chamada à API do Claude ───────────────────────────────────────────────────
 
 def chamar_claude(prompt: str, system_prompt: str) -> str:
+    import time as _time
+
     if not ANTHROPIC_API_KEY:
         log.error("ANTHROPIC_API_KEY não configurada.")
         sys.exit(1)
@@ -173,16 +175,24 @@ def chamar_claude(prompt: str, system_prompt: str) -> str:
     log.info("[Claude] Gerando artigo...")
     client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=4096,
-        system=system_prompt,
-        messages=[{"role": "user", "content": prompt}],
-    )
-
-    resposta = message.content[0].text
-    log.info(f"[Claude] Tokens usados — input: {message.usage.input_tokens}, output: {message.usage.output_tokens}")
-    return resposta
+    for tentativa in range(1, 4):
+        try:
+            message = client.messages.create(
+                model="claude-sonnet-4-6",
+                max_tokens=4096,
+                system=system_prompt,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            resposta = message.content[0].text
+            log.info(f"[Claude] Tokens usados — input: {message.usage.input_tokens}, output: {message.usage.output_tokens}")
+            return resposta
+        except anthropic.APIStatusError as e:
+            if e.status_code == 529 and tentativa < 3:
+                espera = 60 * tentativa
+                log.warning(f"[Claude] API sobrecarregada. Tentativa {tentativa}/3. Aguardando {espera}s...")
+                _time.sleep(espera)
+            else:
+                raise
 
 
 # ── Parse da resposta JSON ────────────────────────────────────────────────────
