@@ -1,0 +1,23 @@
+{
+  "nome": "SAFIE E-commerce",
+  "descricao": "Direito e contabilidade para e-commerce e comércio digital",
+  "dominio": "ecommerce.safie.blog.br",
+  "url_completa": "https://ecommerce.safie.blog.br",
+  "idioma": "pt-BR",
+  "autor": "SAFIE",
+  "email_contato": "contato@safie.com.br",
+  "site_institucional": "https://safie.com.br",
+  "artigos_por_pagina": 10,
+  "apify_ator": "",
+  "identidade_visual": {
+    "fonte_referencia": "https://consultoria.safie.com.br",
+    "cor_primaria": "#154EFA",
+    "cor_secundaria": "#14DFFA",
+    "cor_fundo_escuro": "#000000",
+    "cor_fundo_claro": "#F5F7FD",
+    "cor_texto": "#0F0F29",
+    "cor_cinza": "#69727d",
+    "fonte_titulo": "DM Sans",
+    "fonte_corpo": "DM Sans"
+  }
+}

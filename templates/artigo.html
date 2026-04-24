@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{{TITULO}} — {{BLOG_NOME}}</title>
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <link rel="canonical" href="{{CANONICAL_URL}}">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article">
+  <meta property="og:title"       content="{{TITULO}} — {{BLOG_NOME}}">
+  <meta property="og:description" content="{{META_DESCRIPTION}}">
+  <meta property="og:url"         content="{{CANONICAL_URL}}">
+  <meta property="og:site_name"   content="{{BLOG_NOME}}">
+  <meta property="og:locale"      content="pt_BR">
+  <meta property="article:published_time" content="{{DATA_ISO}}">
+  <meta property="article:section"       content="{{TEMA}}">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="{{TITULO}} — {{BLOG_NOME}}">
+  <meta name="twitter:description" content="{{META_DESCRIPTION}}">
+
+  <!-- Schema.org JSON-LD (BlogPosting + FAQPage) -->
+  <script type="application/ld+json">
+{{SCHEMA_JSON}}
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/estilo.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo" aria-label="{{BLOG_NOME}} — Página inicial">
+      <span class="logo-marca">SAFIE <span>E-commerce</span></span>
+      <span class="logo-sub">Direito &amp; Contabilidade</span>
+    </a>
+    <nav id="nav-principal" class="nav-principal" aria-label="Navegação principal">
+      <a href="/">Home</a>
+      <a href="/temas/">Temas</a>
+      <a href="/sobre.html">Sobre</a>
+      <a href="/busca.html">Busca</a>
+    </nav>
+    <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <article class="artigo-wrapper" itemscope itemtype="https://schema.org/BlogPosting">
+
+    <header class="artigo-header">
+      <a class="artigo-tema" href="/temas/{{TEMA_SLUG}}.html">{{TEMA}}</a>
+
+      <h1 class="artigo-titulo" itemprop="headline">{{TITULO}}</h1>
+
+      <div class="artigo-meta">
+        <span>Por <strong itemprop="author">SAFIE</strong></span>
+        <span>·</span>
+        <time datetime="{{DATA_ISO}}" itemprop="datePublished">{{DATA_FORMATADA}}</time>
+        <span>·</span>
+        <span>{{TEMPO_LEITURA}} min de leitura</span>
+      </div>
+    </header>
+
+    <!-- Resumo executivo (para IAs generativas / GEO) -->
+    <aside class="resumo-executivo" itemprop="abstract">
+      <strong>Resumo executivo</strong>
+      {{RESUMO_EXECUTIVO}}
+    </aside>
+
+    <!-- Corpo do artigo -->
+    <div class="artigo-corpo" itemprop="articleBody">
+      {{CONTEUDO}}
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq" itemscope itemtype="https://schema.org/FAQPage">
+      <h2>Perguntas frequentes</h2>
+      {{FAQ_HTML}}
+    </section>
+
+    <!-- Referências -->
+    <aside class="referencias">
+      <h3>Fontes e referências</h3>
+      {{REFERENCIAS_HTML}}
+    </aside>
+
+  </article>
+
+  <!-- Artigos relacionados -->
+  <div class="container">
+    <section class="relacionados">
+      <h3>Artigos relacionados</h3>
+      <div class="relacionados-lista">
+        {{RELACIONADOS_HTML}}
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">SAFIE <span>E-commerce</span></div>
+    <nav class="footer-links">
+      <a href="/">Home</a>
+      <a href="/temas/">Temas</a>
+      <a href="/sobre.html">Sobre</a>
+      <a href="/busca.html">Busca</a>
+      <a href="https://safie.com.br" target="_blank" rel="noopener">safie.com.br</a>
+      <a href="/sitemap.xml">Sitemap</a>
+    </nav>
+    <p class="footer-copy">
+      © {{ANO}} <a href="https://safie.com.br" target="_blank" rel="noopener">SAFIE</a> — As informações têm caráter educativo e não substituem assessoria jurídica individualizada.
+    </p>
+  </div>
+</footer>
+
+<script src="/assets/js/busca.js"></script>
+</body>
+</html>

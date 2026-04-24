@@ -1,0 +1,20 @@
+{
+  "rss_feeds": [
+    {"nome": "G1 Economia", "url": "https://g1.globo.com/rss/g1/economia/"},
+    {"nome": "Folha Mercado", "url": "https://feeds.folha.uol.com.br/mercado/rss091.xml"},
+    {"nome": "JOTA", "url": "https://www.jota.info/feed"},
+    {"nome": "Conjur", "url": "https://www.conjur.com.br/rss.xml"},
+    {"nome": "InfoMoney", "url": "https://www.infomoney.com.br/feed/"},
+    {"nome": "Startupi", "url": "https://startupi.com.br/feed/"},
+    {"nome": "Pequenas Empresas Grandes Negócios", "url": "https://revistapegn.globo.com/rss/ultimas-noticias.xml"}
+  ],
+  "fontes_autoridade": {
+    "valor.globo.com": 10,
+    "infomoney.com.br": 8,
+    "ecommercebrasil.com.br": 8,
+    "exame.com": 7,
+    "revistapegn.globo.com": 7,
+    "olhardigital.com.br": 5,
+    "startupi.com.br": 5
+  }
+}

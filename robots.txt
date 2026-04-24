@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ecommerce.safie.blog.br/sitemap.xml
