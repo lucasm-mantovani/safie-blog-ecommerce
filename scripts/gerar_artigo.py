@@ -268,15 +268,24 @@ def montar_artigo_completo(dados_claude: dict, noticia: dict, config_blog: dict)
         if ref_original not in " ".join(refs):
             refs.insert(0, ref_original)
 
-    refs_html = ""
+    refs_html = "<ul>\n"
     for ref in refs:
         if not ref or not ref.strip():
             continue
-        match = re.match(r"\[(.+?)\]\((.+?)\)", ref.strip())
+        ref_text = ref.strip().lstrip("-").strip()
+        match = re.search(r"\[(.+?)\]\((.+?)\)", ref_text)
         if match:
-            refs_html += f'<a href="{match.group(2)}" target="_blank" rel="noopener">{match.group(1)}</a>\n'
+            link_text = match.group(1)
+            link_url = match.group(2)
+            link_html = f'<a href="{link_url}" target="_blank" rel="noopener">{link_text}</a>'
+            prefix = ref_text[:match.start()].strip().rstrip(":").strip()
+            if prefix:
+                refs_html += f'<li><span class="ref-label">{prefix}:</span> {link_html}</li>\n'
+            else:
+                refs_html += f'<li>{link_html}</li>\n'
         else:
-            refs_html += f"<span>{ref.strip()}</span>\n"
+            refs_html += f'<li>{ref_text}</li>\n'
+    refs_html += "</ul>\n"
 
     faq_schema = [
         {
