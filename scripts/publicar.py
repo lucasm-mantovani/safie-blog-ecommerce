@@ -29,8 +29,10 @@ CONFIG_TEMAS  = BASE / "config" / "temas.json"
 ARTIGO_PATH   = BASE / "dados" / "artigo_gerado.json"
 TEMPLATE_ART  = BASE / "templates" / "artigo.html"
 TEMPLATE_TEMA = BASE / "templates" / "tema.html"
+TEMPLATE_IMG  = BASE / "templates" / "imagem-artigo.svg"
 ARTIGOS_DIR   = BASE / "artigos"
 TEMAS_DIR     = BASE / "temas"
+IMGS_DIR      = BASE / "assets" / "img" / "artigos"
 INDICE_JSON   = BASE / "artigos" / "indice.json"
 SITEMAP       = BASE / "sitemap.xml"
 INDEX_HTML    = BASE / "index.html"
@@ -52,6 +54,10 @@ log = logging.getLogger(__name__)
 load_dotenv(BASE / ".env")
 GITHUB_REPO  = os.getenv("GITHUB_REPO", "")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
+
+
+# ── Constantes ────────────────────────────────────────────────────────────────
+MESES_ABREV = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"]
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -86,12 +92,120 @@ def data_amigavel(iso: str) -> str:
         return iso
 
 
+def data_capa(iso: str) -> str:
+    try:
+        dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+        return f"{dt.day:02d} {MESES_ABREV[dt.month-1]} {dt.year}"
+    except Exception:
+        return ""
+
+
+def escapar_xml(texto: str) -> str:
+    return (texto
+            .replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace('"', "&quot;")
+            .replace("'", "&#39;"))
+
+
+def quebrar_titulo(titulo: str) -> tuple:
+    """Divide o título em até 3 linhas equilibradas respeitando palavras inteiras."""
+    n = len(titulo)
+    palavras = titulo.split()
+
+    if n <= 25 or len(palavras) == 1:
+        return titulo, "", ""
+
+    if n <= 50:
+        melhor = (float("inf"), 1)
+        for i in range(1, len(palavras)):
+            l1 = " ".join(palavras[:i])
+            l2 = " ".join(palavras[i:])
+            diff = abs(len(l1) - len(l2))
+            if diff < melhor[0]:
+                melhor = (diff, i)
+        c = melhor[1]
+        return " ".join(palavras[:c]), " ".join(palavras[c:]), ""
+
+    alvo = n // 3
+    melhor = (float("inf"), 1, 2)
+    for i in range(1, len(palavras) - 1):
+        for j in range(i + 1, len(palavras)):
+            l1 = " ".join(palavras[:i])
+            l2 = " ".join(palavras[i:j])
+            l3 = " ".join(palavras[j:])
+            if not l3:
+                continue
+            custo = (len(l1) - alvo) ** 2 + (len(l2) - alvo) ** 2 + (len(l3) - alvo) ** 2
+            if custo < melhor[0]:
+                melhor = (custo, i, j)
+    _, i, j = melhor
+    return " ".join(palavras[:i]), " ".join(palavras[i:j]), " ".join(palavras[j:])
+
+
+# ── 0. Gerar imagem de capa ───────────────────────────────────────────────────
+
+def gerar_imagem_capa(artigo: dict, config_blog: dict) -> tuple:
+    """Gera o SVG de capa do artigo. Retorna (url_completa, url_relativa)."""
+    if not TEMPLATE_IMG.exists():
+        log.warning(f"Template de imagem não encontrado: {TEMPLATE_IMG}")
+        return "", ""
+
+    IMGS_DIR.mkdir(parents=True, exist_ok=True)
+
+    slug      = artigo["slug"]
+    titulo    = artigo["titulo"]
+    tema      = artigo.get("tema_nome", "")
+    data      = data_capa(artigo.get("data_iso", ""))
+    nome_blog = config_blog.get("nome", "SAFIE Blog")
+    url_blog  = config_blog.get("url_completa", "")
+    iv        = config_blog.get("identidade_visual", {})
+    cor_dest  = iv.get("cor_destaque_imagem", "#ff6b9d")
+    cor_bco   = "#ffffff"
+
+    l1, l2, l3 = quebrar_titulo(titulo)
+
+    if l3:
+        c1, c2, c3 = cor_bco, cor_bco, cor_dest
+    elif l2:
+        c1, c2, c3 = cor_bco, cor_dest, cor_dest
+    else:
+        c1, c2, c3 = cor_dest, cor_dest, cor_dest
+
+    variaveis = {
+        "TITULO_LINHA_1": escapar_xml(l1),
+        "TITULO_LINHA_2": escapar_xml(l2),
+        "TITULO_LINHA_3": escapar_xml(l3),
+        "COR_LINHA_1":    c1,
+        "COR_LINHA_2":    c2,
+        "COR_LINHA_3":    c3,
+        "CATEGORIA":      escapar_xml(tema.upper()),
+        "DATA":           data,
+        "NOME_BLOG":      escapar_xml(nome_blog),
+    }
+
+    svg = preencher_template(TEMPLATE_IMG.read_text(encoding="utf-8"), variaveis)
+    destino = IMGS_DIR / f"{slug}.svg"
+    destino.write_text(svg, encoding="utf-8")
+    log.info(f"Imagem de capa gerada: {destino}")
+
+    rel = f"/assets/img/artigos/{slug}.svg"
+    return f"{url_blog}{rel}", rel
+
+
 # ── 1. Gerar HTML do artigo ───────────────────────────────────────────────────
 
-def gerar_html_artigo(artigo: dict, config_blog: dict) -> Path:
+def gerar_html_artigo(artigo: dict, config_blog: dict, imagem_url: str = "", imagem_rel: str = "") -> Path:
     template = TEMPLATE_ART.read_text(encoding="utf-8")
     ano = datetime.now().strftime("%Y")
     nome_blog = config_blog.get("nome", "SAFIE Blog")
+
+    bloco_imagem = (
+        f'<img class="artigo-capa" src="{imagem_rel}" alt="{artigo["titulo"]}" '
+        f'width="1200" height="630" loading="lazy">'
+        if imagem_rel else ""
+    )
 
     variaveis = {
         "TITULO":           artigo["titulo"],
@@ -112,6 +226,9 @@ def gerar_html_artigo(artigo: dict, config_blog: dict) -> Path:
         "RELACIONADOS_HTML":artigo["relacionados_html"],
         "SCHEMA_JSON":      artigo["schema_json"],
         "ANO":              ano,
+        "IMAGEM_CAPA_URL":  imagem_url,
+        "IMAGEM_CAPA_REL":  imagem_rel,
+        "IMAGEM_BLOCO":     bloco_imagem,
     }
 
     html = preencher_template(template, variaveis)
@@ -313,7 +430,10 @@ def main(sem_git: bool = False):
 
     log.info(f"Publicando: '{artigo['titulo']}'")
 
-    gerar_html_artigo(artigo, config_blog)
+    # 0. Gerar imagem de capa
+    imagem_url, imagem_rel = gerar_imagem_capa(artigo, config_blog)
+
+    gerar_html_artigo(artigo, config_blog, imagem_url, imagem_rel)
     atualizar_indice(artigo)
 
     indice = ler_json(INDICE_JSON, [])

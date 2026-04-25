@@ -17,6 +17,7 @@
 :root {
   --azul:       #154EFA;
   --ciano:      #14DFFA;
+  --acento:     #db2777;
   --escuro:     #0F0F29;
   --preto:      #000000;
   --claro:      #F5F7FD;
@@ -26,7 +27,7 @@
   --fonte:      'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --max-width:  1100px;
   --radius:     8px;
-  --sombra:     0 2px 12px rgba(21,78,250,0.08);
+  --sombra:     0 2px 12px rgba(219,39,119,0.08);
 }
 
 html {
@@ -43,7 +44,7 @@ body {
 }
 
 a {
-  color: var(--azul);
+  color: var(--acento);
   text-decoration: none;
 }
 
@@ -68,6 +69,7 @@ img {
 /* ── Header ── */
 .site-header {
   background: var(--preto);
+  border-top: 3px solid var(--acento);
   border-bottom: 2px solid var(--azul);
   position: sticky;
   top: 0;
@@ -284,9 +286,9 @@ img {
 
 .filtros-lista a:hover,
 .filtros-lista a.ativo {
-  background: var(--azul);
+  background: var(--acento);
   color: var(--branco);
-  border-color: var(--azul);
+  border-color: var(--acento);
 }
 
 /* ── Grid de artigos ── */
@@ -310,7 +312,7 @@ img {
 
 .card-artigo:hover {
   box-shadow: var(--sombra);
-  border-color: var(--azul);
+  border-color: var(--acento);
   transform: translateY(-2px);
 }
 
@@ -320,8 +322,8 @@ img {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--azul);
-  background: rgba(21,78,250,0.08);
+  color: var(--acento);
+  background: rgba(219,39,119,0.08);
   padding: 3px 10px;
   border-radius: 20px;
 }
@@ -424,7 +426,7 @@ img {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--azul);
+  color: var(--acento);
   margin-bottom: 16px;
 }
 
@@ -452,8 +454,8 @@ img {
 
 /* Resumo executivo */
 .resumo-executivo {
-  background: linear-gradient(135deg, rgba(21,78,250,0.06), rgba(20,223,250,0.06));
-  border-left: 4px solid var(--azul);
+  background: linear-gradient(135deg, rgba(219,39,119,0.06), rgba(20,223,250,0.04));
+  border-left: 4px solid var(--acento);
   border-radius: 0 var(--radius) var(--radius) 0;
   padding: 20px 24px;
   margin: 32px 0;
@@ -468,8 +470,17 @@ img {
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--azul);
+  color: var(--acento);
   margin-bottom: 8px;
+}
+
+/* Imagem de capa do artigo */
+.artigo-capa {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+  display: block;
 }
 
 /* Conteúdo do artigo */

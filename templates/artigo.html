@@ -15,6 +15,9 @@
   <meta property="og:url"         content="{{CANONICAL_URL}}">
   <meta property="og:site_name"   content="{{BLOG_NOME}}">
   <meta property="og:locale"      content="pt_BR">
+  <meta property="og:image"       content="{{IMAGEM_CAPA_URL}}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="article:published_time" content="{{DATA_ISO}}">
   <meta property="article:section"       content="{{TEMA}}">
 
@@ -22,6 +25,7 @@
   <meta name="twitter:card"        content="summary_large_image">
   <meta name="twitter:title"       content="{{TITULO}} — {{BLOG_NOME}}">
   <meta name="twitter:description" content="{{META_DESCRIPTION}}">
+  <meta name="twitter:image"       content="{{IMAGEM_CAPA_URL}}">
 
   <!-- Schema.org JSON-LD (BlogPosting + FAQPage) -->
   <script type="application/ld+json">
@@ -68,6 +72,8 @@
         <span>{{TEMPO_LEITURA}} min de leitura</span>
       </div>
     </header>
+
+    {{IMAGEM_BLOCO}}
 
     <!-- Resumo executivo (para IAs generativas / GEO) -->
     <aside class="resumo-executivo" itemprop="abstract">

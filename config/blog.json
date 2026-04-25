@@ -18,6 +18,10 @@
     "cor_texto": "#0F0F29",
     "cor_cinza": "#69727d",
     "fonte_titulo": "DM Sans",
-    "fonte_corpo": "DM Sans"
+    "fonte_corpo": "DM Sans",
+    "cor_destaque_imagem": "#ff6b9d",
+    "cor_acento_site": "#db2777",
+    "fundo_imagem_inicio": "#1a0f1a",
+    "fundo_imagem_fim": "#2a1a28"
   }
 }
