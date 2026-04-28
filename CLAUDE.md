@@ -79,14 +79,11 @@ Os scripts deste blog são **100% genéricos** — nenhum hardcode de nicho:
 6. Meios de pagamento no varejo digital (PIX, chargeback, split)
 7. Importação e cross-border (Remessa Conforme, Shein/Shopee)
 
-## Estado atual do projeto (2026-04-23)
-- **Fase 1 concluída:** Estrutura de pastas, configs, scripts genéricos, templates HTML
-- **Fase 2:** Validação visual local — PENDENTE (confirmar com usuário)
-- **Fase 3:** Teste de busca RSS — PENDENTE
-- **Fase 4:** Gerar 1 artigo de teste — PENDENTE
-- **Fase 5:** Deploy (GitHub + Cloudflare Pages + DNS) — PENDENTE
-  - Repo a criar: `lucasm-mantovani/safie-blog-ecommerce`
-  - Cloudflare Pages: criar novo projeto conectado ao repo
-  - DNS: criar CNAME "ecommerce" no Registro.br → safie-blog-ecommerce.pages.dev
-  - Launchd: `br.safie.blog.ecommerce.diario` — horário 7h30 (distribuir carga do Blog-Cripto que roda às 7h)
-- **Fase 6:** Validação SEO e artigos de teste — PENDENTE
+## Estado atual do projeto (2026-04-28)
+- **Fases 1–5 concluídas:** pipeline 4 etapas ativo, launchd às 7h30, domínio ecommerce.safie.blog.br no ar
+- **Fase 6 concluída (2026-04-28):**
+  - DNS propagado e HTTP 200 confirmados
+  - robots.txt + sitemap.xml funcionando
+  - Schema.org BlogPosting + FAQPage em todos os artigos
+  - meta robots, keywords, og:*, twitter:* no template
+  - Validação manual opcional: Google Rich Results Test + PageSpeed Insights
