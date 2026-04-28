@@ -17,13 +17,16 @@ cd "$PASTA"
 source "$HOME/.zshrc" 2>/dev/null || true
 source "$PASTA/.env" 2>/dev/null || true
 
-echo "[1/3] Buscando notícia..." >> "$LOG"
+echo "[1/4] Buscando notícia..." >> "$LOG"
 python3 scripts/buscar_noticia.py >> "$LOG" 2>&1
 
-echo "[2/3] Gerando artigo..." >> "$LOG"
+echo "[2/4] Gerando artigo..." >> "$LOG"
 python3 scripts/gerar_artigo.py >> "$LOG" 2>&1
 
-echo "[3/3] Publicando..." >> "$LOG"
+echo "[3/4] Otimizando SEO/GEO..." >> "$LOG"
+python3 scripts/otimizar_seo.py >> "$LOG" 2>&1
+
+echo "[4/4] Publicando..." >> "$LOG"
 python3 scripts/publicar.py >> "$LOG" 2>&1
 
 echo "PIPELINE CONCLUÍDO: $(date)" >> "$LOG"

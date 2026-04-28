@@ -225,6 +225,7 @@ def gerar_html_artigo(artigo: dict, config_blog: dict, imagem_url: str = "", ima
         "REFERENCIAS_HTML": artigo["referencias_html"],
         "RELACIONADOS_HTML":artigo["relacionados_html"],
         "SCHEMA_JSON":      artigo["schema_json"],
+        "PALAVRAS_CHAVE":  artigo.get("palavras_chave", ""),
         "ANO":              ano,
         "IMAGEM_CAPA_URL":  imagem_url,
         "IMAGEM_CAPA_REL":  imagem_rel,
