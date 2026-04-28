@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Todos os artigos — SAFIE E-commerce</title>
+  <meta name="description" content="Arquivo completo de artigos do SAFIE E-commerce: Direito e contabilidade para e-commerce no Brasil.">
+  <link rel="canonical" href="https://ecommerce.safie.blog.br/artigos/">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="Todos os artigos — SAFIE E-commerce">
+  <meta property="og:description" content="Arquivo completo de artigos sobre direito e contabilidade para e-commerce no brasil.">
+  <meta property="og:url"         content="https://ecommerce.safie.blog.br/artigos/">
+  <meta property="og:site_name"   content="SAFIE E-commerce">
+
+  <link rel="stylesheet" href="/assets/css/estilo.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo" aria-label="SAFIE E-commerce — Página inicial">
+      <span class="logo-marca">SAFIE <span>E-commerce</span></span>
+      <span class="logo-sub">Direito &amp; Contabilidade</span>
+    </a>
+    <nav id="nav-principal" class="nav-principal" aria-label="Navegação principal">
+      <a href="/">Home</a>
+      <a href="/artigos/" class="ativo">Todos os artigos</a>
+      <a href="/temas/">Temas</a>
+      <a href="/sobre.html">Sobre</a>
+      <a href="/busca.html">Busca</a>
+    </nav>
+    <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <div class="artigos-page-header">
+      <p class="breadcrumb"><a href="/">Home</a> › Todos os artigos</p>
+      <h1>Todos os artigos</h1>
+    </div>
+
+    <div class="artigos-lista" id="artigos-lista">
+      <p style="color:var(--cinza);padding:40px 0;text-align:center;">Carregando artigos…</p>
+    </div>
+
+    <div class="artigos-paginacao" id="paginacao"></div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">SAFIE <span>E-commerce</span></div>
+    <nav class="footer-links">
+      <a href="/">Home</a>
+      <a href="/artigos/">Todos os artigos</a>
+      <a href="/temas/">Temas</a>
+      <a href="/sobre.html">Sobre</a>
+      <a href="/busca.html">Busca</a>
+      <a href="https://safie.com.br" target="_blank" rel="noopener">safie.com.br</a>
+      <a href="/sitemap.xml">Sitemap</a>
+    </nav>
+    <p class="footer-copy">
+      © 2026 <a href="https://safie.com.br" target="_blank" rel="noopener">SAFIE</a> — Direito e contabilidade para e-commerce no Brasil.<br>
+      As informações têm caráter educativo e não substituem assessoria jurídica individualizada.
+    </p>
+  </div>
+</footer>
+
+<script>
+const POR_PAGINA = 30;
+const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+function formatarData(iso) {
+  const d = new Date(iso);
+  return `${d.getDate()} de ${MESES[d.getMonth()]} de ${d.getFullYear()}`;
+}
+
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function itemHtml(artigo) {
+  const slug  = esc(artigo.slug);
+  const href  = `/artigos/${slug}.html`;
+  return `
+<a href="${href}" class="lista-item">
+  <div class="lista-thumb">
+    <img src="/assets/img/artigos/${slug}.svg" alt="${esc(artigo.titulo)}" loading="lazy" width="160" height="90">
+  </div>
+  <div class="lista-corpo">
+    <div class="lista-topo">
+      <span class="card-tema">${esc(artigo.tema)}</span>
+      <span class="lista-data">${formatarData(artigo.data)}</span>
+    </div>
+    <p class="lista-titulo">${esc(artigo.titulo)}</p>
+    <p class="lista-lead">${esc(artigo.resumo)}</p>
+  </div>
+</a>`;
+}
+
+let todosArtigos = [];
+let paginaAtual = 1;
+
+function renderPagina(pagina) {
+  paginaAtual = pagina;
+  const inicio = (pagina - 1) * POR_PAGINA;
+  const fatia  = todosArtigos.slice(inicio, inicio + POR_PAGINA);
+  document.getElementById('artigos-lista').innerHTML = fatia.map(itemHtml).join('');
+
+  const totalPaginas = Math.ceil(todosArtigos.length / POR_PAGINA);
+  const pag = document.getElementById('paginacao');
+  if (totalPaginas <= 1) { pag.innerHTML = ''; return; }
+
+  let html = '';
+  if (pagina > 1) html += `<button onclick="renderPagina(${pagina-1})">← Anterior</button>`;
+  for (let i = 1; i <= totalPaginas; i++) {
+    html += `<button class="${i === pagina ? 'ativo' : ''}" onclick="renderPagina(${i})">${i}</button>`;
+  }
+  if (pagina < totalPaginas) html += `<button onclick="renderPagina(${pagina+1})">Próxima →</button>`;
+  pag.innerHTML = html;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+fetch('/artigos/indice.json')
+  .then(r => r.json())
+  .then(artigos => {
+    todosArtigos = artigos;
+    if (!artigos.length) {
+      document.getElementById('artigos-lista').innerHTML = '<p style="color:var(--cinza);padding:40px 0;text-align:center;">Nenhum artigo publicado ainda.</p>';
+      return;
+    }
+    renderPagina(1);
+  })
+  .catch(() => {
+    document.getElementById('artigos-lista').innerHTML = '<p style="color:var(--cinza);padding:40px 0;text-align:center;">Erro ao carregar artigos.</p>';
+  });
+
+document.getElementById('menu-toggle').addEventListener('click', function() {
+  const nav = document.getElementById('nav-principal');
+  nav.classList.toggle('aberto');
+  this.setAttribute('aria-expanded', nav.classList.contains('aberto'));
+});
+</script>
+</body>
+</html>

@@ -939,3 +939,407 @@ img {
     font-size: 0.82rem;
   }
 }
+
+/* ── v3: Destaque da home ── */
+.destaque-section {
+  margin: 32px 0 40px;
+}
+
+.destaque-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--cinza-claro);
+  transition: box-shadow 0.25s;
+  color: inherit;
+  text-decoration: none;
+}
+
+.destaque-card:hover {
+  box-shadow: 0 6px 32px rgba(37,99,235,0.13);
+}
+
+.destaque-imagem-wrap {
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  background: var(--escuro);
+}
+
+.destaque-imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s;
+}
+
+.destaque-card:hover .destaque-imagem {
+  transform: scale(1.03);
+}
+
+.destaque-corpo {
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  background: var(--claro);
+}
+
+.destaque-tags {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.destaque-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--ciano);
+  color: var(--escuro);
+}
+
+.destaque-badge.mais-lido {
+  background: #f59e0b;
+  color: #fff;
+}
+
+.destaque-categoria {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--acento);
+}
+
+.destaque-titulo {
+  font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--escuro);
+}
+
+.destaque-lead {
+  font-size: 0.95rem;
+  color: var(--cinza);
+  line-height: 1.65;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.destaque-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--azul);
+  margin-top: 4px;
+  transition: color 0.2s;
+}
+
+.destaque-card:hover .destaque-btn {
+  color: var(--ciano);
+}
+
+.destaque-skeleton {
+  height: 300px;
+  background: linear-gradient(90deg, var(--cinza-claro) 25%, #f0f2f9 50%, var(--cinza-claro) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--radius);
+  margin: 32px 0 40px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── v3: Grid de galeria (home — exatamente 3 colunas) ── */
+.artigos-grid-home {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 0 0 8px;
+}
+
+/* ── v3: Card com imagem ── */
+.card-artigo {
+  position: relative;
+}
+
+.card-imagem-wrap {
+  overflow: hidden;
+  border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
+  aspect-ratio: 16/9;
+  background: var(--escuro);
+  margin: -24px -24px 16px;
+}
+
+.card-imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.25s;
+}
+
+.card-artigo:hover .card-imagem {
+  opacity: 0.88;
+}
+
+.card-linha-acento {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--acento);
+  border-radius: 0 0 var(--radius) var(--radius);
+  transform: scaleX(0);
+  transition: transform 0.25s;
+}
+
+.card-artigo:hover .card-linha-acento {
+  transform: scaleX(1);
+}
+
+.card-titulo-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── v3: Botão "Ver todos os artigos" ── */
+.ver-todos-container {
+  display: flex;
+  justify-content: center;
+  padding: 32px 0 56px;
+}
+
+.btn-ver-todos {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border: 2px solid var(--acento);
+  border-radius: 40px;
+  color: var(--acento);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.btn-ver-todos:hover {
+  background: var(--acento);
+  color: var(--branco);
+}
+
+/* ── v3: Página /artigos/ — listagem completa ── */
+.artigos-page-header {
+  padding: 40px 0 24px;
+  border-bottom: 2px solid var(--cinza-claro);
+  margin-bottom: 32px;
+}
+
+.artigos-page-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--escuro);
+}
+
+.breadcrumb {
+  font-size: 0.82rem;
+  color: var(--cinza);
+  margin-bottom: 12px;
+}
+
+.breadcrumb a {
+  color: var(--acento);
+}
+
+.artigos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 64px;
+}
+
+.lista-item {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid var(--cinza-claro);
+  border-radius: var(--radius);
+  transition: box-shadow 0.2s, border-color 0.2s;
+  text-decoration: none;
+  color: inherit;
+  align-items: start;
+}
+
+.lista-item:hover {
+  box-shadow: var(--sombra);
+  border-color: var(--acento);
+}
+
+.lista-thumb {
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  border-radius: calc(var(--radius) - 2px);
+  background: var(--escuro);
+  flex-shrink: 0;
+}
+
+.lista-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lista-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lista-topo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.lista-data {
+  font-size: 0.78rem;
+  color: var(--cinza);
+}
+
+.lista-titulo {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--escuro);
+  letter-spacing: -0.01em;
+}
+
+.lista-lead {
+  font-size: 0.88rem;
+  color: var(--cinza);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.artigos-paginacao {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px 0 48px;
+}
+
+.artigos-paginacao button {
+  padding: 8px 20px;
+  border: 1px solid var(--cinza-claro);
+  background: var(--branco);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-family: var(--fonte);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.artigos-paginacao button:hover,
+.artigos-paginacao button.ativo {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: var(--branco);
+}
+
+/* ── v3: Bloco "Sobre os autores" ── */
+.sobre-autores {
+  border-top: 2px solid var(--acento);
+  padding: 32px 0 0;
+  margin: 48px 0 40px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sobre-autores-titulo {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--cinza);
+  margin-bottom: 12px;
+}
+
+.sobre-autores p {
+  font-size: 0.92rem;
+  color: #444;
+  line-height: 1.7;
+}
+
+.sobre-autores a {
+  color: inherit;
+  border-bottom: none;
+}
+
+.sobre-autores strong {
+  color: var(--acento);
+  font-weight: 600;
+}
+
+.sobre-autores a:hover strong {
+  text-decoration: underline;
+}
+
+/* ── v3: Responsivo grid home ── */
+@media (max-width: 900px) {
+  .artigos-grid-home {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .destaque-card {
+    grid-template-columns: 1fr;
+  }
+
+  .destaque-imagem-wrap {
+    aspect-ratio: 16/7;
+  }
+}
+
+@media (max-width: 600px) {
+  .artigos-grid-home {
+    grid-template-columns: 1fr;
+  }
+
+  .lista-item {
+    grid-template-columns: 120px 1fr;
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .destaque-corpo {
+    padding: 24px 20px;
+  }
+}

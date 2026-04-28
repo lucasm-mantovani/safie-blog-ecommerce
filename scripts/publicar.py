@@ -281,6 +281,10 @@ def card_artigo_html(artigo_idx: dict) -> str:
 
 
 def atualizar_home(indice: list, config_blog: dict):
+    # Home é JS-driven (v3): lê artigos/indice.json dinamicamente via home.js.
+    # O indice.json já foi atualizado por atualizar_indice() — nada mais a fazer aqui.
+    log.info(f"Home JS-driven: indice.json atualizado com {len(indice)} artigos.")
+    return
     html_home = INDEX_HTML.read_text(encoding="utf-8")
     artigos_por_pagina = config_blog.get("artigos_por_pagina", 10)
     pagina = indice[:artigos_por_pagina]
