@@ -105,25 +105,35 @@ def resumo_consumo():
 
 # ── Histórico de notícias ─────────────────────────────────────────────────────
 
-def ja_publicado(url: str, tema_slug: str, dias: int = 15) -> bool:
+def ja_publicado(url: str, tema_slug: str,
+                 dias_url: int = 15, dias_tema: int = 3) -> bool:
+    """
+    Retorna True se URL ou tema_slug já foi publicado dentro
+    de sua respectiva janela de tempo.
+    - dias_url: janela em dias para bloquear mesma URL (default 15)
+    - dias_tema: janela em dias para espaçar mesmo tema (default 3)
+    Entradas com url_fonte ou tema_slug vazios são ignoradas.
+    Entradas com data_publicacao inválida são ignoradas.
+    """
     dados = ler_json(HISTORICO, {"noticias": []})
-    limite = datetime.now(timezone.utc) - timedelta(days=dias)
+    agora = datetime.now(timezone.utc)
+    limite_url = agora - timedelta(days=dias_url)
+    limite_tema = agora - timedelta(days=dias_tema)
 
     for item in dados.get("noticias", []):
-        ts = item.get("data_publicacao", "")
+        item_url = item.get("url_fonte", "")
+        item_tema = item.get("tema_slug", "")
+        data_str = item.get("data_publicacao", "")
+
         try:
-            data = datetime.fromisoformat(ts)
-            if data.tzinfo is None:
-                data = data.replace(tzinfo=timezone.utc)
-        except Exception:
+            data_pub = datetime.fromisoformat(data_str)
+        except (ValueError, TypeError):
             continue
 
-        if data < limite:
-            continue
-
-        if item.get("url_fonte") == url:
+        if url and item_url == url and data_pub >= limite_url:
             return True
-        if item.get("tema_slug") == tema_slug:
+
+        if tema_slug and item_tema == tema_slug and data_pub >= limite_tema:
             return True
 
     return False
@@ -389,6 +399,12 @@ def main(forcar_rss: bool = False, apenas_tema: str = "") -> Dict:
     resultado_path = BASE / "dados" / "noticia_selecionada.json"
     salvar_json(resultado_path, noticia)
     log.info(f"Resultado salvo em {resultado_path}")
+
+    if noticia.get("url"):
+        try:
+            registrar_noticia_publicada(noticia)
+        except Exception as e:
+            log.warning(f"[aviso] falha ao registrar histórico: {e}")
 
     print(json.dumps(noticia, ensure_ascii=False, indent=2))
 
