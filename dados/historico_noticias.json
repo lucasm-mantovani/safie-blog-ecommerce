@@ -1,1 +1,10 @@
-{"noticias": []}
+{
+  "noticias": [
+    {
+      "data_publicacao": "2026-05-06T10:30:52.752423+00:00",
+      "titulo_noticia": "A tributação das plataformas digitais: a nova era da responsabilidade tributária",
+      "url_fonte": "https://www.jota.info/opiniao-e-analise/artigos/a-tributacao-das-plataformas-digitais-a-nova-era-da-responsabilidade-tributaria",
+      "tema_slug": "marketplaces"
+    }
+  ]
+}
