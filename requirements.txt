@@ -1,0 +1,7 @@
+# Dependências Python dos scripts do pipeline diário
+# Versões pinadas para reprodutibilidade
+anthropic==0.91.0
+requests==2.32.5
+feedparser==6.0.12
+apify-client==1.12.2
+python-dotenv==1.2.1
