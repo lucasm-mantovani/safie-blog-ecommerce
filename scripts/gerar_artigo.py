@@ -160,7 +160,11 @@ Regras obrigatorias:
 - Todo o conteudo em portugues brasileiro
 - Nao use travessao (use virgulas ou parenteses)
 - Paragrafos curtos: maximo 3 linhas cada
-- CRITICO PARA JSON VALIDO: nenhuma string pode conter quebra de linha literal. Use apenas uma linha por campo de texto. Em HTML use <br> se precisar de quebra dentro de uma tag"""
+- REGRAS CRÍTICAS PARA JSON VÁLIDO:
+  - Use aspas simples (') para atributos HTML internos, ex: <a href='...'>, <h2 class='...'>
+  - Para aspa dupla literal dentro de uma string, escape com backslash: \\"texto\\"
+  - NÃO use quebras de linha literais dentro de strings JSON; use \\n quando necessário
+- Retorne APENAS o JSON válido, sem texto antes ou depois"""
 
 
 # ── Chamada à API do Claude ───────────────────────────────────────────────────
@@ -195,34 +199,83 @@ def chamar_claude(prompt: str, system_prompt: str) -> str:
                 raise
 
 
+# ── Salvar resposta bruta para forense ───────────────────────────────────────
+
+def salvar_resposta_bruta(texto: str, dir_dados: Path) -> None:
+    """Salva resposta bruta do Claude em dados/ultima_resposta_claude.txt
+    para forense em caso de falha de parsing. Sobrescreve a cada execução."""
+    try:
+        path = dir_dados / "ultima_resposta_claude.txt"
+        path.write_text(texto, encoding="utf-8")
+    except Exception as e:
+        log.warning(f"[aviso] falha ao salvar resposta bruta: {e}")
+
+
 # ── Parse da resposta JSON ────────────────────────────────────────────────────
 
 def extrair_json(texto: str) -> dict:
+    """Extrai JSON da resposta do Claude com fallback para sanitização
+    de newlines literais dentro de strings. Levanta ValueError se falhar."""
     texto = texto.strip()
 
-    # Remove blocos markdown se houver
-    if "```" in texto:
+    if texto.startswith("```"):
         linhas = texto.split("\n")
-        linhas = [l for l in linhas if not l.strip().startswith("```")]
-        texto = "\n".join(linhas)
+        texto = "\n".join(linhas[1:-1])
 
     inicio = texto.find("{")
     fim    = texto.rfind("}") + 1
     if inicio == -1 or fim == 0:
-        raise ValueError("JSON não encontrado na resposta do Claude")
+        raise ValueError("JSON não encontrado na resposta")
 
-    json_str = texto[inicio:fim]
+    bloco = texto[inicio:fim]
+
+    erro_original = None
+    try:
+        return json.loads(bloco)
+    except json.JSONDecodeError as e1:
+        erro_original = str(e1)
+        log.warning(f"[fallback] parse direto falhou: {e1}. Sanitizando newlines.")
 
     try:
-        return json.loads(json_str)
-    except json.JSONDecodeError:
-        # Tenta sanitizar: remove quebras de linha literais dentro de strings JSON
-        import re
-        # Substitui newlines dentro de strings por espaço
-        def sanitizar_string_json(m):
-            return m.group(0).replace("\n", " ").replace("\r", " ")
-        json_str_limpo = re.sub(r'"[^"\\]*(?:\\.[^"\\]*)*"', sanitizar_string_json, json_str, flags=re.DOTALL)
-        return json.loads(json_str_limpo)
+        bloco_sanitizado = re.sub(
+            r'"(?:[^"\\]|\\.)*"',
+            lambda m: m.group(0).replace("\n", " ").replace("\r", " "),
+            bloco,
+            flags=re.DOTALL
+        )
+        return json.loads(bloco_sanitizado)
+    except json.JSONDecodeError as e2:
+        raise ValueError(
+            f"JSON inválido após sanitização de newlines. "
+            f"Erro original: {erro_original}. Erro pós-sanitização: {e2}"
+        ) from e2
+
+
+# ── Geração com retry ─────────────────────────────────────────────────────────
+
+def gerar_artigo_com_retry(prompt_original: str, system_prompt: str, max_tentativas: int = 2) -> dict:
+    """Chama o LLM com retry. Se primeira resposta falhar parse, regenera 1x
+    com prompt reforçado. Salva resposta bruta sempre."""
+    instrucao_reforco = (
+        "\n\nIMPORTANTE: a resposta anterior foi rejeitada por JSON inválido. "
+        "Regerar atentando para: (1) usar aspas simples dentro de HTML interno, "
+        "ex: <a href='...'>; (2) escapar aspas duplas literais com backslash, "
+        "ex: \\\"texto\\\"; (3) NÃO usar quebras de linha literais dentro das "
+        "strings JSON, usar \\\\n se necessário."
+    )
+    prompt_atual = prompt_original
+    ultima_excecao = None
+    for tentativa in range(max_tentativas):
+        resposta = chamar_claude(prompt_atual, system_prompt)
+        salvar_resposta_bruta(resposta, BASE / "dados")
+        try:
+            return extrair_json(resposta)
+        except ValueError as e:
+            ultima_excecao = e
+            log.warning(f"Tentativa {tentativa+1}/{max_tentativas} falhou: {e}")
+            if tentativa < max_tentativas - 1:
+                prompt_atual = prompt_original + instrucao_reforco
+    raise ValueError(f"Falha em {max_tentativas} tentativas. Última: {ultima_excecao}")
 
 
 # ── Montagem do artigo ────────────────────────────────────────────────────────
@@ -366,10 +419,7 @@ def main(noticia_path: Path = NOTICIA_PATH) -> dict:
 
     system_prompt = construir_system_prompt(config_blog)
     prompt        = montar_prompt(noticia, config_blog)
-    resposta      = chamar_claude(prompt, system_prompt)
-
-    log.info("[Claude] Parseando resposta...")
-    dados_claude = extrair_json(resposta)
+    dados_claude  = gerar_artigo_com_retry(prompt, system_prompt)
 
     artigo = montar_artigo_completo(dados_claude, noticia, config_blog)
 
