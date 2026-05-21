@@ -404,19 +404,12 @@ def git_commit_push(artigo: dict):
         log.info("[Git] Nada para commitar.")
         return
 
-    if not GITHUB_REPO or not GITHUB_TOKEN:
-        log.warning("[Git] GITHUB_REPO ou GITHUB_TOKEN não configurados. Push pulado.")
-        return
-
-    remote_url = f"https://{GITHUB_TOKEN}@github.com/{GITHUB_REPO}.git"
-    run(["git", "remote", "set-url", "origin", remote_url])
-
     log.info("[Git] Push para GitHub...")
     ok = run(["git", "push", "origin", "main"])
     if ok:
         log.info("[Git] Push concluído. Cloudflare Pages vai fazer o deploy automaticamente.")
     else:
-        log.error("[Git] Falha no push. Verifique GITHUB_TOKEN e GITHUB_REPO no .env")
+        log.error("[Git] Falha no push. Verifique se o remote SSH está configurado corretamente.")
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
