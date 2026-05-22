@@ -77,6 +77,12 @@
       "titulo_noticia": "Colorido, de bolso e novo queridinho dos fashionistas: como é o relógio da Swatch que causou confusão em dia de lançamento",
       "url_fonte": "https://g1.globo.com/economia/noticia/2026/05/19/colorido-de-bolso-e-novo-queridinho-dos-fashionistas-como-e-o-relogio-da-swatch-que-causou-confusao-em-dia-de-lancamento.ghtml",
       "tema_slug": "marketplaces"
+    },
+    {
+      "data_publicacao": "2026-05-22T03:23:06.105444+00:00",
+      "titulo_noticia": "Dados de segurados do INSS vazam após falha de segurança",
+      "url_fonte": "https://redir.folha.com.br/redir/online/mercado/rss091/*https://www1.folha.uol.com.br/mercado/2026/05/dados-de-segurados-do-inss-vazam-apos-falha-de-seguranca.shtml",
+      "tema_slug": "lgpd-ecommerce"
     }
   ]
 }
