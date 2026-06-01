@@ -24,3 +24,6 @@ venv/
 .env.backup*
 *.bkp.*
 .git/config.bkp.*
+
+# Forense Claude — resposta crua, regenerada a cada run
+dados/ultima_resposta_claude.txt
