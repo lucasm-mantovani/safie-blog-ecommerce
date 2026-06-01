@@ -101,6 +101,60 @@
       "titulo_noticia": "Convocação vale publi? Como Neymar e outros atletas da seleção podem lucrar após lista da Copa",
       "url_fonte": "https://g1.globo.com/economia/noticia/2026/05/23/convocacao-vale-publi-como-neymar-e-outros-atletas-da-selecao-podem-lucrar-apos-lista-da-copa.ghtml",
       "tema_slug": "marketplaces"
+    },
+    {
+      "data_publicacao": "2026-05-25T03:34:12.540607+00:00",
+      "titulo_noticia": "Óculos inteligentes viram febre em pegadinhas, mas acendem alerta sobre exposição indevida nas redes",
+      "url_fonte": "https://g1.globo.com/tecnologia/noticia/2026/05/24/oculos-inteligentes-viram-febre-em-pegadinhas-mas-acendem-alerta-sobre-exposicao-indevida-nas-redes.ghtml",
+      "tema_slug": "lgpd-ecommerce"
+    },
+    {
+      "data_publicacao": "2026-05-26T22:16:17.199882+00:00",
+      "titulo_noticia": "O mercado livre de energia e o 'carro mil'",
+      "url_fonte": "https://redir.folha.com.br/redir/online/mercado/rss091/*https://www1.folha.uol.com.br/colunas/jerson-kelman/2026/05/o-mercado-livre-de-energia-e-o-carro-mil.shtml",
+      "tema_slug": "marketplaces"
+    },
+    {
+      "data_publicacao": "2026-05-27T22:31:56.784422+00:00",
+      "titulo_noticia": "Juíza mantém fim de pagamento em dinheiro em ônibus do Rio de Janeiro",
+      "url_fonte": "https://www.conjur.com.br/2026-mai-27/juiza-mantem-fim-de-pagamento-em-dinheiro-em-onibus-do-rio-de-janeiro/",
+      "tema_slug": "direito-consumidor-digital"
+    },
+    {
+      "data_publicacao": "2026-05-28T03:39:39.055533+00:00",
+      "titulo_noticia": "Quando dados e conteúdo entram na mesma sala",
+      "url_fonte": "https://www.jota.info/opiniao-e-analise/colunas/radar-de-evidencias/quando-dados-e-conteudo-entram-na-mesma-sala",
+      "tema_slug": "lgpd-ecommerce"
+    },
+    {
+      "data_publicacao": "2026-05-29T13:37:55.899417+00:00",
+      "titulo_noticia": "FII GGRC11 compra galpão em Diadema (SP) por R$ 93 milhões focando no “last mile”",
+      "url_fonte": "https://www.infomoney.com.br/onde-investir/fii-ggrc11-compra-galpao-logistico-em-diadema-por-r-93-milhoes-focando-no-last-mile/",
+      "tema_slug": "logistica"
+    },
+    {
+      "data_publicacao": "2026-05-29T14:39:43.976488+00:00",
+      "titulo_noticia": "'Tiro pode sair pela culatra': potencial impacto de classificação de PCC e CV como terroristas sobre políticos e Faria Lima pode prejudicar Flávio, diz professor",
+      "url_fonte": "https://g1.globo.com/economia/noticia/2026/05/29/tiro-pode-sair-pela-culatra-potencial-impacto-de-classificacao-de-pcc-e-cv-como-terroristas-sobre-politicos-e-faria-lima-pode-prejudicar-flavio-diz-professor.ghtml",
+      "tema_slug": "cross-border"
+    },
+    {
+      "data_publicacao": "2026-05-29T22:21:10.238253+00:00",
+      "titulo_noticia": "Golpes com álbum de figurinhas da Copa disparam e somam mais de 160 sites falsos; veja como se proteger",
+      "url_fonte": "https://g1.globo.com/economia/noticia/2026/05/28/golpes-com-album-de-figurinhas-da-copa-disparam-e-somam-mais-de-160-sites-falsos-veja-como-se-proteger.ghtml",
+      "tema_slug": "marketplaces"
+    },
+    {
+      "data_publicacao": "2026-05-31T03:45:49.086223+00:00",
+      "titulo_noticia": "Em consulta, ANPD sugere obrigação de aferir idade mesmo em redes sociais sem conteúdo proibido",
+      "url_fonte": "https://www.jota.info/executivo/em-consulta-anpd-sugere-obrigacao-de-aferir-idade-mesmo-em-redes-sociais-sem-conteudo-proibido",
+      "tema_slug": "lgpd-ecommerce"
+    },
+    {
+      "data_publicacao": "2026-06-01T09:48:20.561346+00:00",
+      "titulo_noticia": "Camil Alimentos propõe aumento de capital de R$ 1,39 bi",
+      "url_fonte": "https://www.infomoney.com.br/mercados/camil-alimentos-propoe-aumento-de-capital-de-r-139-bi/",
+      "tema_slug": "direito-consumidor-digital"
     }
   ]
 }

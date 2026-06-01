@@ -45,7 +45,14 @@ log = logging.getLogger(__name__)
 # ── Credenciais ───────────────────────────────────────────────────────────────
 load_dotenv(BASE / ".env")
 load_dotenv(Path.home() / ".zshrc", override=False)
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+# ANTHROPIC_API_KEY — lida de ~/.config/safie/anthropic_key (centralizado, modo 600)
+_KEY_PATH = Path.home() / ".config" / "safie" / "anthropic_key"
+try:
+    ANTHROPIC_API_KEY = _KEY_PATH.read_text().strip()
+except FileNotFoundError:
+    sys.exit(f"ERRO: chave Anthropic não encontrada em {_KEY_PATH}")
+if not ANTHROPIC_API_KEY:
+    sys.exit(f"ERRO: chave Anthropic vazia em {_KEY_PATH}")
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
