@@ -179,6 +179,12 @@
       "titulo_noticia": "ANPD abre processo administrativo contra a Claro por compartilhamento irregular de dados de clientes com a Serasa",
       "url_fonte": "https://g1.globo.com/tecnologia/noticia/2026/06/08/anpd-processa-claro-por-irregularidades-no-compartilhamento-de-dados-pessoais-de-clientes-com-a-serasa.ghtml",
       "tema_slug": "lgpd-ecommerce"
+    },
+    {
+      "data_publicacao": "2026-06-10T03:20:29.383672+00:00",
+      "titulo_noticia": "Mercado Livre perde R$ 263 mil em golpe de pastores, diz investigação",
+      "url_fonte": "https://redir.folha.com.br/redir/online/mercado/rss091/*https://www1.folha.uol.com.br/mercado/2026/06/mercado-livre-perde-r-263-mil-em-golpe-de-pastores-diz-investigacao.shtml",
+      "tema_slug": "marketplaces"
     }
   ]
 }
