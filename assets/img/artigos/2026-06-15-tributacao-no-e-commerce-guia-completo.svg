@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a0f1a"/>
+      <stop offset="100%" stop-color="#2a1a28"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Fundo com gradiente -->
+  <rect width="1200" height="630" fill="url(#bg-grad)"/>
+
+  <!-- Padrão de linhas horizontais (prateleiras / fluxo de produtos) -->
+  <g stroke="#ff6b9d" stroke-width="0.6" opacity="0.08">
+    <line x1="0" y1="70"  x2="1200" y2="70"/>
+    <line x1="0" y1="120" x2="1200" y2="120"/>
+    <line x1="0" y1="170" x2="1200" y2="170"/>
+    <line x1="0" y1="220" x2="1200" y2="220"/>
+    <line x1="0" y1="270" x2="1200" y2="270"/>
+    <line x1="0" y1="320" x2="1200" y2="320"/>
+    <line x1="0" y1="370" x2="1200" y2="370"/>
+    <line x1="0" y1="420" x2="1200" y2="420"/>
+    <line x1="0" y1="470" x2="1200" y2="470"/>
+    <line x1="0" y1="520" x2="1200" y2="520"/>
+    <line x1="0" y1="570" x2="1200" y2="570"/>
+  </g>
+
+  <!-- Setas de fluxo (direita, acima do carrinho) -->
+  <g stroke="#ff6b9d" stroke-width="1.5" opacity="0.25" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="830" y1="130" x2="890" y2="130"/>
+    <polyline points="882,122 890,130 882,138"/>
+    <line x1="870" y1="160" x2="930" y2="160"/>
+    <polyline points="922,152 930,160 922,168"/>
+    <line x1="910" y1="190" x2="970" y2="190"/>
+    <polyline points="962,182 970,190 962,198"/>
+  </g>
+
+  <!-- Carrinho estilizado em linhas geométricas -->
+  <g stroke="#ff6b9d" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Corpo do carrinho -->
+    <path d="M 850 260 L 870 260 L 910 380 L 1080 380 L 1110 280 L 870 280"
+          stroke-width="3" opacity="0.6"/>
+    <!-- Alça / trilho superior -->
+    <line x1="840" y1="240" x2="880" y2="240" stroke-width="2.5" opacity="0.5"/>
+    <line x1="880" y1="240" x2="870" y2="260" stroke-width="2.5" opacity="0.5"/>
+    <!-- Divisórias internas -->
+    <line x1="930" y1="280" x2="940" y2="360" stroke-width="1.5" opacity="0.35"/>
+    <line x1="990" y1="280" x2="1000" y2="360" stroke-width="1.5" opacity="0.35"/>
+    <line x1="1050" y1="280" x2="1055" y2="360" stroke-width="1.5" opacity="0.35"/>
+    <!-- Rodas -->
+    <circle cx="940" cy="410" r="20" stroke-width="2.5" opacity="0.55"/>
+    <circle cx="940" cy="410" r="8"  stroke-width="1.5" opacity="0.4"/>
+    <circle cx="1060" cy="410" r="20" stroke-width="2.5" opacity="0.55"/>
+    <circle cx="1060" cy="410" r="8"  stroke-width="1.5" opacity="0.4"/>
+    <!-- Itens no carrinho (retângulos) -->
+    <rect x="885" y="295" width="35" height="55" rx="3" stroke-width="1.5" opacity="0.3"/>
+    <rect x="928" y="288" width="52" height="62" rx="3" stroke-width="1.5" opacity="0.3"/>
+    <rect x="990" y="300" width="45" height="50" rx="3" stroke-width="1.5" opacity="0.3"/>
+  </g>
+
+  <!-- Destaque luminoso no carrinho -->
+  <circle cx="980" cy="330" r="120" fill="#ff6b9d" opacity="0.04"/>
+
+  <!-- Setas de fluxo saindo do carrinho (entrega) -->
+  <g stroke="#ff6b9d" stroke-width="1.5" opacity="0.3" fill="none" stroke-linecap="round">
+    <line x1="1130" y1="350" x2="1180" y2="310"/>
+    <polyline points="1168,308 1182,308 1182,322" stroke-linejoin="round"/>
+    <line x1="1130" y1="400" x2="1185" y2="400"/>
+    <polyline points="1177,392 1185,400 1177,408" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Logo — canto superior esquerdo -->
+  <rect x="52" y="40" width="10" height="10" fill="#ff6b9d"/>
+  <text x="68" y="51" fill="#ffffff"
+        font-family="'DM Sans', Arial, sans-serif" font-size="15" font-weight="600">SAFIE E-commerce</text>
+
+  <!-- Categoria e data -->
+  <text x="52" y="210" fill="#ff6b9d"
+        font-family="'DM Sans', Arial, sans-serif" font-size="12" font-weight="600" letter-spacing="3">TRIBUTAÇÃO NO E-COMMERCE · 15 JUN 2026</text>
+
+  <!-- Título — linha 1 -->
+  <text x="52" y="286" fill="#ffffff"
+        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">Tributação no</text>
+  <!-- Título — linha 2 -->
+  <text x="52" y="352" fill="#ff6b9d"
+        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">E-commerce: Guia Completo</text>
+  <!-- Título — linha 3 (última linha fica na cor de destaque) -->
+  <text x="52" y="418" fill="#ff6b9d"
+        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700"></text>
+
+  <!-- Barra de destaque — canto inferior esquerdo -->
+  <rect x="52" y="572" width="64" height="4" fill="#ff6b9d"/>
+</svg>
