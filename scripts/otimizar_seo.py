@@ -85,8 +85,9 @@ def main():
     # 1. Validar título (total com sufixo ≤ 60 chars)
     titulo_original = artigo.get("titulo", "")
     titulo_ok = validar_titulo(titulo_original, blog_nome)
-    if titulo_ok != titulo_original:
-        artigo["titulo"] = titulo_ok
+    # fix (bug-filipinas, 16/06): NÃO sobrescrever o título canônico.
+    # validar_titulo segue logando/validando e alimentando palavras-chave,
+    # mas o título completo passa a viver em <title>, <h1>, capa, cards e indice.json.
     log.info(f"Title ({len(titulo_ok + ' | ' + blog_nome)} chars): {titulo_ok} | {blog_nome}")
 
     # 2. Gerar palavras-chave
