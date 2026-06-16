@@ -79,10 +79,10 @@
 
   <!-- Título — linha 1 -->
   <text x="52" y="286" fill="#ffffff"
-        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">LGPD e PIX:</text>
+        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">LGPD e PIX: vazamento</text>
   <!-- Título — linha 2 -->
   <text x="52" y="352" fill="#ff6b9d"
-        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">vazamento de dados no</text>
+        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">de dados no e-commerce</text>
   <!-- Título — linha 3 (última linha fica na cor de destaque) -->
   <text x="52" y="418" fill="#ff6b9d"
         font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700"></text>

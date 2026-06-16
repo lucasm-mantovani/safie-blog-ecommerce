@@ -79,10 +79,10 @@
 
   <!-- Título — linha 1 -->
   <text x="52" y="286" fill="#ffffff"
-        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">Publi de atletas:</text>
+        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">Publi de atletas: tributação</text>
   <!-- Título — linha 2 -->
   <text x="52" y="352" fill="#ff6b9d"
-        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">tributação e</text>
+        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">e compliance digital</text>
   <!-- Título — linha 3 (última linha fica na cor de destaque) -->
   <text x="52" y="418" fill="#ff6b9d"
         font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700"></text>

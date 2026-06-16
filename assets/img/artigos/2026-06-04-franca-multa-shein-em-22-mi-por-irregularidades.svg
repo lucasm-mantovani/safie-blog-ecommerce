@@ -79,10 +79,10 @@
 
   <!-- Título — linha 1 -->
   <text x="52" y="286" fill="#ffffff"
-        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">França multa Shein</text>
+        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">França multa Shein em €22</text>
   <!-- Título — linha 2 -->
   <text x="52" y="352" fill="#ff6b9d"
-        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">em €22 mi por</text>
+        font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">mi por irregularidades</text>
   <!-- Título — linha 3 (última linha fica na cor de destaque) -->
   <text x="52" y="418" fill="#ff6b9d"
         font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700"></text>
