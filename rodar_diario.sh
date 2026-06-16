@@ -5,7 +5,7 @@
 
 set -e
 
-PASTA="$HOME/CLAUDE/Blog-Ecommerce"
+PASTA="$HOME/CLAUDE/Blogs-SAFIE/Blog-ecommerce"
 LOG="$PASTA/logs/pipeline_$(date +%Y-%m-%d).log"
 
 echo "=======================================" >> "$LOG"
