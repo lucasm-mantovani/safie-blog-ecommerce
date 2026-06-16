@@ -32,22 +32,21 @@ function cardHtml(artigo) {
   const tema  = escaparHtml(artigo.tema);
   const titulo = escaparHtml(artigo.titulo);
   const data  = formatarData(artigo.data);
+  const resumo = escaparHtml(artigo.resumo);
 
+  // v3: card limpo (sem faixa de imagem chapada), com .card-corpo + .card-resumo.
+  // Mantém .card-artigo + data-tema para o filtro de tema (aplicarFiltro / busca.js).
   return `
-<div class="card-artigo" data-tema="${escaparHtml(artigo.tema_slug)}">
-  <div class="card-imagem-wrap">
-    <a href="${href}">
-      <img class="card-imagem" src="${img}" alt="${titulo}" loading="lazy" width="400" height="225">
-    </a>
+<a class="card-artigo" data-tema="${escaparHtml(artigo.tema_slug)}" href="${href}">
+  <div class="card-corpo">
+    <span class="card-tema">${tema}</span>
+    <h2 class="card-titulo-clamp">${titulo}</h2>
+    <p class="card-resumo">${resumo}</p>
+    <div class="card-meta">
+      <span class="card-data">${data}</span>
+    </div>
   </div>
-  <span class="card-tema">${tema}</span>
-  <h2 class="card-titulo-clamp"><a href="${href}">${titulo}</a></h2>
-  <div class="card-meta">
-    <span class="card-data">${data}</span>
-    <a class="card-link" href="${href}">Ler →</a>
-  </div>
-  <div class="card-linha-acento"></div>
-</div>`;
+</a>`;
 }
 
 function renderDestaque(artigo, isMaisLido) {

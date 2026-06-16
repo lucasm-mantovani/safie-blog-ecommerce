@@ -27,3 +27,6 @@ venv/
 
 # Forense Claude — resposta crua, regenerada a cada run
 dados/ultima_resposta_claude.txt
+
+# Estado de deduplicação — gerenciado pelo pipeline, não versionar (decisão #005, 16/06/2026)
+dados/historico_noticias.json
