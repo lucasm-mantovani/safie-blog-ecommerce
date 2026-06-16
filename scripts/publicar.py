@@ -395,8 +395,23 @@ def git_commit_push(artigo: dict):
             log.warning(f"Git: {' '.join(cmd)} — {result.stderr.strip()}")
         return result.returncode == 0
 
-    log.info("[Git] Adicionando arquivos...")
-    run(["git", "add", "-A"])
+    # git add cirúrgico — apenas artefatos públicos do pipeline (decisão #005)
+    log.info("[Git] Adicionando arquivos (add cirúrgico — #005)...")
+    slug = artigo["slug"]
+    tema_slug = artigo.get("tema_slug")
+    arquivos_publicacao = [
+        f"artigos/{slug}.html",
+        f"assets/img/artigos/{slug}.svg",
+        "artigos/indice.json",
+        "sitemap.xml",
+    ]
+    if tema_slug:
+        arquivos_publicacao.append(f"temas/{tema_slug}.html")
+    for arquivo in arquivos_publicacao:
+        if (BASE / arquivo).exists():
+            run(["git", "add", arquivo])
+        else:
+            log.warning(f"[Git] Artefato esperado ausente, não adicionado: {arquivo}")
 
     log.info(f"[Git] Commit: {msg}")
     ok = run(["git", "commit", "-m", msg])
