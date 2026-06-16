@@ -215,6 +215,12 @@
       "titulo_noticia": "Como a próxima linha de código pode quebrar sua empresa",
       "url_fonte": "https://startupi.com.br/como-a-proxima-linha-de-codigo-pode-quebrar-sua-empresa/",
       "tema_slug": "lgpd-ecommerce"
+    },
+    {
+      "data_publicacao": "2026-06-16T10:30:41.133166+00:00",
+      "titulo_noticia": "'Taxa das blusinhas': governo volta a tributar compras internacionais de baixo valor em 2027, mas com imposto e alíquota diferentes",
+      "url_fonte": "https://g1.globo.com/economia/noticia/2026/06/16/taxa-das-blusinhas-governo-volta-a-tributar-compras-internacionais-de-baixo-valor-em-2027-mas-com-imposto-e-aliquota-diferentes.ghtml",
+      "tema_slug": "cross-border"
     }
   ]
 }
