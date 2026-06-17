@@ -6,7 +6,7 @@ Fluxo:
   2. Filtra resultados das últimas 48h
   3. Seleciona a notícia mais relevante (sem repetir histórico dos últimos 15 dias)
   4. Se Apify falhar (limite esgotado ou erro) → fallback para RSS
-  5. Se RSS também falhar → retorna tema evergreen de config/temas.json
+  5. Se RSS também não trouxer notícia fresca → encerra com exit 75 (Direção 1: sem evergreen, não publica)
   6. Registra consumo em dados/consumo_apify.json
 
 Uso:
@@ -309,25 +309,6 @@ def selecionar_melhor(candidatos: List[Dict], fontes_autoridade: Dict, palavras_
     return escolhida
 
 
-# ── Evergreen fallback ────────────────────────────────────────────────────────
-
-def escolher_evergreen(temas_slugs_usados: List[str], temas_evergreen: List[Dict]) -> Dict:
-    for tema in temas_evergreen:
-        if tema["tema_slug"] not in temas_slugs_usados:
-            return tema
-    return temas_evergreen[0] if temas_evergreen else {
-        "tipo": "evergreen",
-        "tema_slug": "geral",
-        "tema_nome": "Análise jurídica",
-        "titulo": "Conformidade jurídica para empresas digitais no Brasil",
-        "resumo": "Guia prático sobre obrigações legais e regulatórias para empresas que operam no ambiente digital.",
-        "url": "",
-        "fonte": "evergreen",
-        "data": "",
-        "origem": "evergreen",
-    }
-
-
 # ── Orquestrador principal ────────────────────────────────────────────────────
 
 def main(forcar_rss: bool = False, apenas_tema: str = "") -> Dict:
@@ -335,14 +316,18 @@ def main(forcar_rss: bool = False, apenas_tema: str = "") -> Dict:
     log.info("BUSCAR NOTÍCIA — início")
     resumo_consumo()
 
+    # Higiene: limpar saída anterior para evitar consumo ambíguo (Direção 1)
+    arquivo_saida = BASE / "dados" / "noticia_selecionada.json"
+    if arquivo_saida.exists():
+        arquivo_saida.unlink()
+
     config_blog   = ler_json(CONFIG_BLOG, {})
-    config_temas  = ler_json(CONFIG_TEMAS, {"temas": [], "temas_evergreen": [], "palavras_juridicas_extras": []})
+    config_temas  = ler_json(CONFIG_TEMAS, {"temas": [], "palavras_juridicas_extras": []})
     config_fontes = ler_json(CONFIG_FONTES, {"rss_feeds": [], "fontes_autoridade": {}})
 
     temas = config_temas.get("temas", [])
     fontes_rss = config_fontes.get("rss_feeds", [])
     fontes_autoridade = config_fontes.get("fontes_autoridade", {})
-    temas_evergreen = config_temas.get("temas_evergreen", [])
 
     # Combina termos jurídicos base com os específicos do nicho
     palavras_juridicas_extras = config_temas.get("palavras_juridicas_extras", [])
@@ -382,18 +367,17 @@ def main(forcar_rss: bool = False, apenas_tema: str = "") -> Dict:
     # ── Etapa 3: Seleção ──
     noticia = selecionar_melhor(todos_candidatos, fontes_autoridade, palavras_juridicas)
 
-    # ── Etapa 4: Evergreen ──
+    # ── Etapa 4: Sem notícia fresca → não publica hoje (Direção 1, sem evergreen) ──
     if not noticia:
-        log.warning("Nenhuma notícia nova encontrada. Usando tema evergreen.")
-        slugs_usados = [t["slug"] for t in temas]
-        noticia = escolher_evergreen(slugs_usados, temas_evergreen)
+        log.warning("Nenhuma notícia nova encontrada hoje. Encerrando sem publicar (exit 75).")
+        sys.exit(75)
 
     log.info("=" * 60)
     log.info(f"RESULTADO FINAL:")
     log.info(f"  Tema:   {noticia.get('tema_nome')}")
     log.info(f"  Título: {noticia.get('titulo')}")
     log.info(f"  Fonte:  {noticia.get('fonte')} ({noticia.get('origem')})")
-    log.info(f"  URL:    {noticia.get('url') or '(sem URL — evergreen)'}")
+    log.info(f"  URL:    {noticia.get('url') or '(sem URL)'}")
     log.info("=" * 60)
 
     resultado_path = BASE / "dados" / "noticia_selecionada.json"

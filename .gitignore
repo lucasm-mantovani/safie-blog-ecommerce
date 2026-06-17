@@ -30,3 +30,6 @@ dados/ultima_resposta_claude.txt
 
 # Estado de deduplicação — gerenciado pelo pipeline, não versionar (decisão #005, 16/06/2026)
 dados/historico_noticias.json
+
+# Marcador de tentativas diárias — estado interno do watchdog (Direção 1)
+dados/tentativas_*.json

@@ -9,6 +9,7 @@
   "site_institucional": "https://safie.com.br",
   "artigos_por_pagina": 10,
   "apify_ator": "",
+  "dias_publicacao": ["seg", "qua", "sex"],
   "identidade_visual": {
     "fonte_referencia": "https://consultoria.safie.com.br",
     "cor_primaria": "#154EFA",

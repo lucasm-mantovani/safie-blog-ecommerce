@@ -36,52 +36,6 @@
       "palavras_chave": ["remessa conforme", "importação e-commerce", "shein", "taxação importados", "imposto importação"]
     }
   ],
-  "temas_evergreen": [
-    {
-      "tipo": "evergreen",
-      "tema_slug": "tributacao-ecommerce",
-      "tema_nome": "Tributação no e-commerce",
-      "titulo": "DIFAL e ICMS no e-commerce: guia prático para empresas",
-      "resumo": "Entenda como funciona o DIFAL e o ICMS nas vendas online entre estados, e como seu e-commerce deve se preparar para cumprir as obrigações fiscais.",
-      "url": "",
-      "fonte": "evergreen",
-      "data": "",
-      "origem": "evergreen"
-    },
-    {
-      "tipo": "evergreen",
-      "tema_slug": "direito-consumidor-digital",
-      "tema_nome": "Direito do consumidor no digital",
-      "titulo": "Direito de arrependimento no e-commerce: o que a lei exige",
-      "resumo": "O Código de Defesa do Consumidor garante 7 dias para devolução em compras online. Saiba exatamente o que sua loja precisa fazer para cumprir a lei e evitar autuações do PROCON.",
-      "url": "",
-      "fonte": "evergreen",
-      "data": "",
-      "origem": "evergreen"
-    },
-    {
-      "tipo": "evergreen",
-      "tema_slug": "lgpd-ecommerce",
-      "tema_nome": "LGPD e privacidade no e-commerce",
-      "titulo": "LGPD no e-commerce: obrigações práticas para lojas online",
-      "resumo": "A Lei Geral de Proteção de Dados cria obrigações específicas para lojas online. Veja o que sua empresa precisa implementar para evitar multas da ANPD.",
-      "url": "",
-      "fonte": "evergreen",
-      "data": "",
-      "origem": "evergreen"
-    },
-    {
-      "tipo": "evergreen",
-      "tema_slug": "cross-border",
-      "tema_nome": "Importação e cross-border",
-      "titulo": "Remessa Conforme: como funciona a tributação de compras internacionais",
-      "resumo": "O programa Remessa Conforme mudou a tributação de compras em plataformas estrangeiras no Brasil. Entenda o impacto para sellers e consumidores.",
-      "url": "",
-      "fonte": "evergreen",
-      "data": "",
-      "origem": "evergreen"
-    }
-  ],
   "palavras_juridicas_extras": [
     "ecommerce", "e-commerce", "marketplace", "difal", "remessa conforme",
     "chargeback", "anpd", "procon", "cdc", "fulfillment", "seller",
