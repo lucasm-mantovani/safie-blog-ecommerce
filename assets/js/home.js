@@ -28,7 +28,7 @@ function escaparHtml(str) {
 function cardHtml(artigo) {
   const slug  = escaparHtml(artigo.slug);
   const img   = `/assets/img/artigos/${slug}.svg`;
-  const href  = `/artigos/${slug}.html`;
+  const href  = `/artigos/${slug}`;
   const tema  = escaparHtml(artigo.tema);
   const titulo = escaparHtml(artigo.titulo);
   const data  = formatarData(artigo.data);
@@ -55,7 +55,7 @@ function renderDestaque(artigo, isMaisLido) {
 
   const slug   = escaparHtml(artigo.slug);
   const img    = `/assets/img/artigos/${slug}.svg`;
-  const href   = `/artigos/${slug}.html`;
+  const href   = `/artigos/${slug}`;
   const badge  = isMaisLido
     ? '<span class="destaque-badge mais-lido">Mais lido do mês</span>'
     : '<span class="destaque-badge">Em destaque</span>';

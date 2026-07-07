@@ -270,11 +270,11 @@ def card_artigo_html(artigo_idx: dict) -> str:
     return (
         f'<div class="card-artigo" data-tema="{artigo_idx["tema_slug"]}">\n'
         f'  <span class="card-tema">{artigo_idx["tema"]}</span>\n'
-        f'  <h2><a href="/artigos/{artigo_idx["slug"]}.html">{artigo_idx["titulo"]}</a></h2>\n'
+        f'  <h2><a href="/artigos/{artigo_idx["slug"]}">{artigo_idx["titulo"]}</a></h2>\n'
         f'  <p class="card-resumo">{artigo_idx["resumo"]}</p>\n'
         f'  <div class="card-meta">\n'
         f'    <span class="card-data">{data_fmt}</span>\n'
-        f'    <a class="card-link" href="/artigos/{artigo_idx["slug"]}.html">Ler artigo →</a>\n'
+        f'    <a class="card-link" href="/artigos/{artigo_idx["slug"]}">Ler artigo →</a>\n'
         f'  </div>\n'
         f'</div>\n'
     )
@@ -325,7 +325,7 @@ def atualizar_pagina_tema(tema_slug: str, indice: list, config_temas: dict, conf
     todos_temas_links = ""
     for t in config_temas.get("temas", []):
         todos_temas_links += (
-            f'<li><a href="/temas/{t["slug"]}.html">{t["nome"]}</a></li>\n'
+            f'<li><a href="/temas/{t["slug"]}">{t["nome"]}</a></li>\n'
         )
 
     cards_html = "\n".join(card_artigo_html(a) for a in artigos_tema) if artigos_tema else (
@@ -353,7 +353,7 @@ def atualizar_pagina_tema(tema_slug: str, indice: list, config_temas: dict, conf
 
 def atualizar_sitemap(artigo: dict, config_blog: dict):
     url_blog = config_blog.get("url_completa", "")
-    url_artigo = f"{url_blog}/artigos/{artigo['slug']}.html"
+    url_artigo = f"{url_blog}/artigos/{artigo['slug']}"
     data_hoje = datetime.now().strftime("%Y-%m-%d")
 
     novo_url = (
