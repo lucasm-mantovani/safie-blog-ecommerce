@@ -559,3 +559,21 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; }
   --cor-nicho: #ff6b9d;
   --cor-nicho-soft: rgba(255, 107, 157, 0.12);
 }
+
+/* GEO Camada 1 — 2026-07-08 */
+
+/* Key takeaways (GEO) */
+.key-takeaways { background: var(--color-bg-light); border-radius: var(--radius-card); padding: var(--space-5); margin: 0 0 var(--space-6); }
+.key-takeaways-titulo { font-size: var(--font-size-label); text-transform: uppercase; letter-spacing: var(--tracking-label); color: var(--color-text-hint-light); margin-bottom: var(--space-3); }
+.key-takeaways ul { margin: 0 0 0 var(--space-5); }
+.key-takeaways li { margin-bottom: var(--space-2); }
+
+/* Citação de sócio — herda .artigo-corpo blockquote (Fraunces, borda de nicho) */
+.citacao-socio p { margin-bottom: var(--space-3); }
+.citacao-socio cite { display: block; font-family: var(--font-body); font-style: normal; font-size: 0.9rem; color: var(--color-text-hint-light); }
+
+/* Tabelas no corpo (GEO) */
+.tabela-wrap { overflow-x: auto; margin: 0 0 var(--space-5); }
+.artigo-corpo table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.artigo-corpo th, .artigo-corpo td { border: 1px solid var(--color-border-light); padding: var(--space-2) var(--space-3); text-align: left; vertical-align: top; }
+.artigo-corpo thead th { background: var(--color-bg-light); font-weight: 600; }

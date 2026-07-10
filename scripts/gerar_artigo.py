@@ -110,6 +110,59 @@ Regras obrigatórias:
 - Português brasileiro correto"""
 
 
+REGRAS_GEO = """REGRAS GEO (otimização para buscadores e IAs generativas) — obrigatórias:
+
+1. FORMATO BLUF (conclusão primeiro): a PRIMEIRA frase do "resumo_executivo" responde
+   diretamente à pergunta implícita no título do artigo, sem contexto histórico antes.
+   Contexto e ressalvas vêm nas frases seguintes. Errado: "Nos últimos anos, a tributação
+   tem mudado...". Certo: "O Imposto Seletivo passa a incidir sobre X a partir de Y, e
+   empresas do setor Z precisam se adaptar até W."
+
+2. KEY TAKEAWAYS: o campo "key_takeaways" traz de 3 a 5 fatos-âncora citáveis do artigo.
+   Cada item é uma frase autossuficiente contendo dispositivo normativo, prazo, número,
+   valor ou entidade. Errado: "É importante entender as mudanças do novo imposto."
+   Certo: "A Emenda Constitucional 132/2023 institui o Imposto Seletivo no art. 153,
+   VIII, da Constituição Federal."
+
+3. ESTRUTURA DO CORPO (vale para contexto_juridico, impacto_pratico e consideracoes_finais):
+   - Cada seção COMEÇA obrigatoriamente com 1 parágrafo <p> de abertura (parágrafo-âncora)
+     que resume a seção. NUNCA comece a seção com <h2> ou <h3>.
+   - NÃO use <h2> dentro das seções (o título H2 da seção já existe na página).
+     Subtítulos internos são sempre <h3>.
+   - Subtítulos <h3> densos em entidades: nomeiam a norma, o órgão, o prazo ou as
+     categorias tratadas. Certo: "<h3>Faixas de risco do PL 2.338: mínimo, elevado e
+     excessivo</h3>". Errado: "<h3>Faixas de risco</h3>".
+   - Toda enumeração (passos, categorias, produtos afetados, obrigações, requisitos)
+     vai em <ul> ou <ol>. PROIBIDO enumerar em prosa corrida ("primeiramente...,
+     em segundo lugar...").
+   - Toda comparação entre 2 ou 3 elementos (regime A vs regime B, faixas, antes vs
+     depois, mapeamento norma > artigo > obrigação) vai em <table> com <thead> e
+     <tbody>. PROIBIDO descrever comparações em prosa.
+   - Termos-chave (leis, dispositivos, órgãos, conceitos centrais) em <strong> na
+     PRIMEIRA ocorrência no corpo (apenas na primeira).
+
+4. FONTES INLINE: quando um parágrafo afirmar algo com base em fonte externa (notícia,
+   órgão, norma publicada online), inclua o link no ponto exato do claim, ex:
+   <a href='URL'>segundo o Valor Econômico</a>. Isso vale ALÉM da lista final de
+   referências, que continua obrigatória.
+
+5. CITAÇÃO DE SÓCIO: o campo "citacao_socio" traz uma análise em primeira pessoa
+   atribuída a um sócio da SAFIE, com 15 a 40 palavras. É leitura de negócio (o que o
+   gestor deve pesar na decisão), não promessa de resultado nem autopromoção.
+   Escolha pelo tema: "Lucas Mantovani" para societário, contratos, direito digital e
+   LGPD; "Ítalo Cunha" para tributário, fiscal e financeiro.
+
+6. CLAIMS ESPECULATIVOS: se o gancho da notícia depender de tese, anúncio ou alegação
+   ainda não verificada (comunicado de empresa, tese não julgada, projeto não votado),
+   diga isso explicitamente na primeira menção ("alegação ainda não verificada",
+   "tese ainda não pacificada"). A análise jurídica do artigo se sustenta na norma
+   vigente; ela NUNCA depende do gancho especulativo.
+
+7. COMPLIANCE OAB (inegociável): sem promessa de resultado, sem comparativo absoluto
+   ("o melhor", "o único"), sem captação mercantil. Distinguir sempre o que é norma
+   vigente do que é interpretação."""
+
+
 # ── Prompt de geração ─────────────────────────────────────────────────────────
 
 def montar_prompt(noticia: dict, config_blog: dict) -> str:
@@ -147,11 +200,16 @@ Retorne APENAS um objeto JSON válido, sem markdown, sem texto fora do JSON.
 {{
   "titulo": "(máximo 60 caracteres, palavra-chave principal do tema, em português)",
   "meta_description": "(máximo 155 caracteres, resumo atraente para o Google)",
-  "resumo_executivo": "(2 a 3 frases diretas, sem quebra de linha literal)",
+  "resumo_executivo": "(3 a 4 frases; a PRIMEIRA responde diretamente à pergunta implícita no título, sem contexto antes; sem quebra de linha literal)",
+  "key_takeaways": ["(3 a 5 strings; cada uma é um fato-âncora citável: dispositivo normativo, prazo, número, valor ou entidade)"],
   "introducao": "(2 a 3 parágrafos em HTML com tags <p>; use aspas simples dentro do HTML)",
-  "contexto_juridico": "(3 a 4 parágrafos em HTML com <p> e <h2>; use aspas simples dentro do HTML)",
+  "titulo_contexto": "(H2 da seção jurídica, denso em entidades: nomeie a norma, o órgão ou o prazo tratado, máximo 80 caracteres)",
+  "contexto_juridico": "(3 a 4 parágrafos em HTML; comece com <p>; subtítulos internos em <h3>, NUNCA <h2>; use <ul>/<ol>/<table> conforme as REGRAS GEO; use aspas simples dentro do HTML)",
+  "titulo_impacto": "(H2 da seção de impacto prático, denso em entidades, máximo 80 caracteres)",
   "impacto_pratico": "(2 a 3 parágrafos em HTML com <p>; use aspas simples dentro do HTML)",
+  "titulo_consideracoes": "(H2 do fechamento, máximo 80 caracteres)",
   "consideracoes_finais": "(1 a 2 parágrafos em HTML com <p>)",
+  "citacao_socio": {{"autor": "(Lucas Mantovani OU Ítalo Cunha)", "texto": "(15 a 40 palavras de análise de negócio, sem promessa de resultado)"}},
   "faq": [
     {{"pergunta": "...", "resposta": "..."}},
     {{"pergunta": "...", "resposta": "..."}},
@@ -167,6 +225,9 @@ Regras obrigatorias:
 - Todo o conteudo em portugues brasileiro
 - Nao use travessao (use virgulas ou parenteses)
 - Paragrafos curtos: maximo 3 linhas cada
+
+{REGRAS_GEO}
+
 - REGRAS CRÍTICAS PARA JSON VÁLIDO:
   - Use aspas simples (') para atributos HTML internos, ex: <a href='...'>, <h2 class='...'>
   - Para aspa dupla literal dentro de uma string, escape com backslash: \\"texto\\"
@@ -190,7 +251,7 @@ def chamar_claude(prompt: str, system_prompt: str) -> str:
         try:
             message = client.messages.create(
                 model="claude-sonnet-4-6",
-                max_tokens=4096,
+                max_tokens=8000,
                 system=system_prompt,
                 messages=[{"role": "user", "content": prompt}],
             )
@@ -285,6 +346,44 @@ def gerar_artigo_com_retry(prompt_original: str, system_prompt: str, max_tentati
     raise ValueError(f"Falha em {max_tentativas} tentativas. Última: {ultima_excecao}")
 
 
+# ── Helpers GEO (Camada 1 — 2026-07-08) ──────────────────────────────────────
+
+_OAB_SOCIOS = {"Lucas Mantovani": "OAB-SP 506.733", "Ítalo Cunha": "OAB-SP 418.966"}
+
+_RE_TABELA_MD = re.compile(
+    r"(?:^|\n)((?:\|[^\n]+\|[ \t]*\n)\|[ \t:|-]+\|[ \t]*\n(?:\|[^\n]+\|[ \t]*\n?)+)"
+)
+
+
+def _converter_markdown_tabela_para_html(html_bruto: str) -> str:
+    """Rede de proteção: converte tabelas markdown (| a | b |) que o modelo
+    tenha emitido apesar do prompt exigir HTML."""
+    def _converter(m):
+        linhas = [l.strip() for l in m.group(1).strip().split("\n") if l.strip()]
+        if len(linhas) < 3:
+            return m.group(0)  # sem linha de dados: não mexe
+        celulas = lambda l: [c.strip() for c in l.strip("|").split("|")]
+        thead = "<tr>" + "".join(f"<th>{c}</th>" for c in celulas(linhas[0])) + "</tr>"
+        tbody = "".join(
+            "<tr>" + "".join(f"<td>{c}</td>" for c in celulas(l)) + "</tr>"
+            for l in linhas[2:]  # pula a linha separadora |---|---|
+        )
+        return f"\n<table><thead>{thead}</thead><tbody>{tbody}</tbody></table>\n"
+    return _RE_TABELA_MD.sub(_converter, html_bruto)
+
+
+def _normalizar_secao(html_secao: str, transicao: str) -> str:
+    """Rede de proteção por seção: converte tabela markdown, rebaixa <h2>
+    internos para <h3>, garante parágrafo-âncora se a seção abrir com
+    subtítulo e envolve tabelas para scroll horizontal no mobile."""
+    secao = _converter_markdown_tabela_para_html((html_secao or "").strip())
+    secao = re.sub(r"<(/?)h2(\s[^>]*)?>", r"<\1h3\2>", secao)
+    if re.match(r"^\s*<h3", secao):
+        secao = f"<p>{transicao}</p>\n" + secao
+    secao = re.sub(r"(<table[\s\S]*?</table>)", r'<div class="tabela-wrap">\1</div>', secao)
+    return secao
+
+
 # ── Montagem do artigo ────────────────────────────────────────────────────────
 
 def montar_artigo_completo(dados_claude: dict, noticia: dict, config_blog: dict) -> dict:
@@ -300,14 +399,49 @@ def montar_artigo_completo(dados_claude: dict, noticia: dict, config_blog: dict)
     url_blog  = config_blog.get("url_completa", "")
     nome_blog = config_blog.get("nome", "SAFIE Blog")
 
+    def _h2(campo: str, fallback: str) -> str:
+        t = (dados_claude.get(campo) or "").strip()
+        return t if 10 <= len(t) <= 90 else fallback
+
+    # Key takeaways (GEO) — bloco entre o resumo executivo e a introdução
+    kt_html = ""
+    kts = [t.strip() for t in (dados_claude.get("key_takeaways") or []) if t and t.strip()]
+    if len(kts) >= 3:
+        kt_html = (
+            '<div class="key-takeaways">\n'
+            '  <p class="key-takeaways-titulo">Principais pontos</p>\n'
+            '  <ul>\n' + "".join(f"    <li>{t}</li>\n" for t in kts[:5]) +
+            '  </ul>\n</div>\n\n'
+        )
+
+    # Citação de sócio (GEO) — whitelist dura: autor fora da lista descarta a citação
+    cit = dados_claude.get("citacao_socio") or {}
+    if not isinstance(cit, dict):
+        cit = {}
+    autor     = (cit.get("autor") or "").strip()
+    texto_cit = (cit.get("texto") or "").strip()
+    citacao_html = ""
+    if autor in _OAB_SOCIOS and 10 <= len(texto_cit.split()) <= 50:
+        citacao_html = (
+            '\n<blockquote class="citacao-socio">\n'
+            f'  <p>{texto_cit}</p>\n'
+            f'  <cite>{autor}, sócio da SAFIE ({_OAB_SOCIOS[autor]})</cite>\n'
+            '</blockquote>\n'
+        )
+
     corpo_html = (
+        kt_html +
         dados_claude.get("introducao", "") +
-        "\n\n<h2>Contexto jurídico e regulatório</h2>\n" +
-        dados_claude.get("contexto_juridico", "") +
-        "\n\n<h2>Impacto prático</h2>\n" +
-        dados_claude.get("impacto_pratico", "") +
-        "\n\n<h2>Considerações finais</h2>\n" +
-        dados_claude.get("consideracoes_finais", "")
+        f"\n\n<h2>{_h2('titulo_contexto', 'Contexto jurídico e regulatório')}</h2>\n" +
+        _normalizar_secao(dados_claude.get("contexto_juridico", ""),
+                          "Os fundamentos normativos do tema estão detalhados a seguir.") +
+        f"\n\n<h2>{_h2('titulo_impacto', 'Impacto prático')}</h2>\n" +
+        _normalizar_secao(dados_claude.get("impacto_pratico", ""),
+                          "Na prática, os efeitos para as empresas são os seguintes.") +
+        citacao_html +
+        f"\n\n<h2>{_h2('titulo_consideracoes', 'Considerações finais')}</h2>\n" +
+        _normalizar_secao(dados_claude.get("consideracoes_finais", ""),
+                          "Em síntese, os pontos de atenção são estes.")
     )
 
     faq_html = ""
@@ -369,7 +503,7 @@ def montar_artigo_completo(dados_claude: dict, noticia: dict, config_blog: dict)
             "dateModified": data_iso,
             "author": {"@type": "Organization", "name": "SAFIE", "url": "https://safie.com.br"},
             "publisher": {"@type": "Organization", "name": nome_blog, "url": url_blog},
-            "url": f"{url_blog}/artigos/{slug}.html",
+            "url": f"{url_blog}/artigos/{slug}",
             "articleSection": noticia.get("tema_nome", ""),
             "inLanguage": "pt-BR",
         },
@@ -408,14 +542,48 @@ def montar_artigo_completo(dados_claude: dict, noticia: dict, config_blog: dict)
     }
 
 
+# ── Relatório de dry-run ──────────────────────────────────────────────────────
+
+def _relatorio_dry_run(artigo: dict, dados_claude: dict) -> None:
+    corpo = artigo["conteudo"]
+    cit = dados_claude.get("citacao_socio") or {}
+    if not isinstance(cit, dict):
+        cit = {}
+    kts = dados_claude.get("key_takeaways") or []
+    print("\n── RELATÓRIO DRY-RUN ──")
+    print(f"Listas no corpo (ul/ol): {corpo.count('<ul')}/{corpo.count('<ol')}")
+    print(f"Tabelas: {corpo.count('<table')}")
+    print(f"<strong>: {corpo.count('<strong>')}")
+    print(f"Links inline no corpo: {corpo.count('<a ')}")
+    h2_vazio = bool(re.search(r"<h2[^>]*>[^<]*</h2>\s*<h[23]", corpo))
+    print(f"H2 vazio: {'SIM' if h2_vazio else 'não'}")
+    print(f"key_takeaways: {len(kts)} itens")
+    print(f"citacao_socio: {cit.get('autor', 'AUSENTE')} ({len((cit.get('texto') or '').split())} palavras)")
+    print(f"resumo_executivo: {len(str(artigo.get('resumo_executivo', '')).split())} palavras")
+    print(f"Palavras no corpo: {artigo['palavras_corpo']}")
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
-def main(noticia_path: Path = NOTICIA_PATH) -> dict:
+def main(noticia_path: Path = NOTICIA_PATH, dry_run: bool = False,
+         titulo_teste: str = None, tema_slug_teste: str = None) -> dict:
     log.info("=" * 60)
-    log.info("GERAR ARTIGO — início")
+    log.info(f"GERAR ARTIGO — início{' [DRY-RUN]' if dry_run else ''}")
 
-    noticia     = ler_json(noticia_path, {})
     config_blog = ler_json(CONFIG_BLOG, {})
+
+    if titulo_teste:
+        temas = ler_json(CONFIG_TEMAS, {}).get("temas", [])
+        tema  = next((t for t in temas if t.get("slug") == tema_slug_teste), {})
+        noticia = {
+            "titulo": titulo_teste,
+            "tema_nome": tema.get("nome", tema_slug_teste or ""),
+            "tema_slug": tema_slug_teste or "",
+            "origem": "evergreen",  # ramo do montar_prompt sem notícia-fonte
+            "url": "", "fonte": "", "resumo": "",
+        }
+    else:
+        noticia = ler_json(noticia_path, {})
 
     if not noticia:
         log.error(f"Nenhuma notícia encontrada em {noticia_path}")
@@ -433,8 +601,14 @@ def main(noticia_path: Path = NOTICIA_PATH) -> dict:
     log.info(f"Artigo gerado: '{artigo['titulo']}' ({artigo['palavras_corpo']} palavras)")
     log.info(f"Slug: {artigo['slug']}")
 
-    salvar_json(ARTIGO_PATH, artigo)
-    log.info(f"Artigo salvo em {ARTIGO_PATH}")
+    if dry_run:
+        destino = BASE / "dados" / f"artigo_dry_run_{datetime.now():%Y%m%d_%H%M}.json"
+        salvar_json(destino, artigo)
+        log.info(f"[DRY-RUN] Artigo salvo em {destino} (artigo_gerado.json intacto; publicar.py NÃO acionado)")
+        _relatorio_dry_run(artigo, dados_claude)
+    else:
+        salvar_json(ARTIGO_PATH, artigo)
+        log.info(f"Artigo salvo em {ARTIGO_PATH}")
     log.info("=" * 60)
 
     return artigo
@@ -443,9 +617,13 @@ def main(noticia_path: Path = NOTICIA_PATH) -> dict:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Gera artigo via Claude API")
     parser.add_argument("--noticia", default=str(NOTICIA_PATH), help="Caminho para o JSON da notícia")
+    parser.add_argument("--dry-run", action="store_true", help="Gera sem gravar artigo_gerado.json (não publica)")
+    parser.add_argument("--titulo", default=None, help="Título de teste (dispensa noticia_selecionada.json)")
+    parser.add_argument("--tema-slug", default=None, help="Slug do tema para o teste")
     args = parser.parse_args()
 
-    artigo = main(noticia_path=Path(args.noticia))
+    artigo = main(noticia_path=Path(args.noticia), dry_run=args.dry_run,
+                  titulo_teste=args.titulo, tema_slug_teste=args.tema_slug)
     print(f"\nArtigo gerado: {artigo['titulo']}")
     print(f"Palavras: {artigo['palavras_corpo']}")
     print(f"Slug: {artigo['slug']}")
