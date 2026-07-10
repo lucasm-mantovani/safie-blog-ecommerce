@@ -264,6 +264,43 @@ def atualizar_indice(artigo: dict):
     log.info(f"Índice de busca atualizado ({len(indice)} artigos)")
 
 
+# ── Artigos relacionados (Camada 3 GEO — 2026-07-10) ─────────────────────────
+
+def gerar_relacionados_html(artigo: dict, indice: list, max_itens: int = 3) -> str:
+    """Camada 3 GEO: monta o bloco 'Continue lendo' com relacionados reais.
+    Mesmo tema (desc por data) → fallback recentes de outros temas.
+    Exclui o próprio artigo (slug) e títulos repetidos (passivo de duplicação)."""
+    slug_atual   = artigo.get("slug", "")
+    tema_atual   = artigo.get("tema_slug", "")
+    titulo_atual = (artigo.get("titulo") or "").strip().lower()
+
+    def _ordenar(itens):
+        return sorted(itens, key=lambda a: a.get("data", ""), reverse=True)
+
+    mesmo_tema = _ordenar([a for a in indice if a.get("tema_slug") == tema_atual])
+    outros     = _ordenar([a for a in indice if a.get("tema_slug") != tema_atual])
+
+    titulos_usados = {titulo_atual}   # dedup inclui o título do próprio artigo
+    escolhidos = []
+    for a in mesmo_tema + outros:     # fallback embutido: outros temas só se faltar
+        if len(escolhidos) >= max_itens:
+            break
+        if a.get("slug") == slug_atual:
+            continue                  # nunca linkar a si mesmo
+        t = (a.get("titulo") or "").strip()
+        if not t or t.lower() in titulos_usados:
+            continue                  # dedup por título (case-insensitive)
+        titulos_usados.add(t.lower())
+        escolhidos.append(a)
+
+    if not escolhidos:
+        return '<p style="color:var(--cinza);font-size:0.9rem;">Mais artigos em breve.</p>'
+
+    itens = "\n".join(f'  <li><a href="/artigos/{a["slug"]}">{a["titulo"]}</a></li>'
+                      for a in escolhidos)
+    return f'<ul class="relacionados-items">\n{itens}\n</ul>'
+
+
 # ── 3. Atualizar home (index.html) ───────────────────────────────────────────
 
 def card_artigo_html(artigo_idx: dict) -> str:
@@ -447,6 +484,12 @@ def main(sem_git: bool = False):
 
     # 0. Gerar imagem de capa
     imagem_url, imagem_rel = gerar_imagem_capa(artigo, config_blog)
+
+    # Camada 3 GEO: relacionados reais a partir do índice (ainda sem o artigo novo)
+    try:
+        artigo["relacionados_html"] = gerar_relacionados_html(artigo, ler_json(INDICE_JSON, []))
+    except Exception as e:
+        log.warning(f"[relacionados] Falha (não bloqueia publicação, fallback = placeholder): {e}")
 
     gerar_html_artigo(artigo, config_blog, imagem_url, imagem_rel)
     atualizar_indice(artigo)
