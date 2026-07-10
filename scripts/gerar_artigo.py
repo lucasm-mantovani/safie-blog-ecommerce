@@ -350,6 +350,24 @@ def gerar_artigo_com_retry(prompt_original: str, system_prompt: str, max_tentati
 
 _OAB_SOCIOS = {"Lucas Mantovani": "OAB-SP 506.733", "Ítalo Cunha": "OAB-SP 418.966"}
 
+# ── Camada 2 GEO (2026-07-10): schema author Person + publisher enriquecido ──
+_AUTOR_SAMEAS = {
+    "Lucas Mantovani": [
+        "https://www.linkedin.com/in/lucasm-mantovani/",
+        "https://www.instagram.com/lucasm.mantovani/"
+    ],
+    "Ítalo Cunha": [
+        "https://www.linkedin.com/in/italo-cunha-cwb/",
+        "https://www.instagram.com/euitalocunha/"
+    ]
+}
+_AUTHOR_DEFAULT_BLOG = "Ítalo Cunha"
+_PUBLISHER_LOGO_URL = "https://consultoria.safie.com.br/wp-content/uploads/2025/11/cropped-2-1-1024x292.webp"
+_PUBLISHER_SAMEAS = [
+    "https://www.instagram.com/safiegroup/",
+    "https://www.instagram.com/safiecontabilidade/"
+]
+
 _RE_TABELA_MD = re.compile(
     r"(?:^|\n)((?:\|[^\n]+\|[ \t]*\n)\|[ \t:|-]+\|[ \t]*\n(?:\|[^\n]+\|[ \t]*\n?)+)"
 )
@@ -493,6 +511,11 @@ def montar_artigo_completo(dados_claude: dict, noticia: dict, config_blog: dict)
         for item in dados_claude.get("faq", [])
     ]
 
+    # Autor do schema: sócio da citação (Camada 1) se válido; senão default do blog
+    autor_schema = autor if autor in _OAB_SOCIOS else _AUTHOR_DEFAULT_BLOG
+    tema_nome_s  = noticia.get("tema_nome", "")
+    tema_slug_s  = noticia.get("tema_slug", "")
+
     schema = [
         {
             "@context": "https://schema.org",
@@ -501,17 +524,37 @@ def montar_artigo_completo(dados_claude: dict, noticia: dict, config_blog: dict)
             "description": dados_claude.get("meta_description", ""),
             "datePublished": data_iso,
             "dateModified": data_iso,
-            "author": {"@type": "Organization", "name": "SAFIE", "url": "https://safie.com.br"},
-            "publisher": {"@type": "Organization", "name": nome_blog, "url": url_blog},
+            "mainEntityOfPage": {"@type": "WebPage", "@id": f"{url_blog}/artigos/{slug}"},
+            "author": {
+                "@type": "Person",
+                "name": autor_schema,
+                "sameAs": _AUTOR_SAMEAS[autor_schema],
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "SAFIE",
+                "url": "https://safie.com.br",
+                "logo": {"@type": "ImageObject", "url": _PUBLISHER_LOGO_URL},
+                "sameAs": _PUBLISHER_SAMEAS,
+            },
             "url": f"{url_blog}/artigos/{slug}",
-            "articleSection": noticia.get("tema_nome", ""),
+            "articleSection": tema_nome_s,
             "inLanguage": "pt-BR",
         },
         {
             "@context": "https://schema.org",
             "@type": "FAQPage",
             "mainEntity": faq_schema,
-        }
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Início", "item": url_blog},
+                {"@type": "ListItem", "position": 2, "name": tema_nome_s, "item": f"{url_blog}/temas/{tema_slug_s}"},
+                {"@type": "ListItem", "position": 3, "name": titulo, "item": f"{url_blog}/artigos/{slug}"},
+            ],
+        },
     ]
 
     relacionados_html = (

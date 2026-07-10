@@ -27,18 +27,53 @@ STOPWORDS = {
     "ao", "à", "ou", "mas", "mais", "seu", "sua", "seus", "suas", "este", "esta",
     "esse", "essa", "como", "não", "foi", "ser", "ter", "tem", "há", "já", "pelo",
     "pela", "pelos", "pelas", "entre", "sobre", "após", "desde", "até",
+    # Camada 2 GEO (2026-07-10): palavras vazias de título que viravam keyword
+    "isso", "muda", "bane", "quando", "quais", "isto", "vai", "está",
+    "sido", "faz", "fez", "novo", "nova",
 }
 
 MAX_TITULO_CHARS = 45
 MAX_DESC_CHARS   = 155
-MAX_KEYWORDS     = 8
+MAX_KEYWORDS     = 10
+
+# ── Camada 2 GEO: extração de entidades reais do corpo ───────────────────────
+
+_ORGAOS = ["ANPD", "Bacen", "Banco Central", "CVM", "CADE", "Receita Federal",
+           "COAF", "MPF", "STF", "STJ", "TST", "TCU", "OAB"]
+
+_RE_ENTIDADES = [
+    # Formas por extenso ANTES das abreviadas (evita capturas parciais)
+    re.compile(r"\bEmenda\s+Constitucional\s+n?\.?\s*\d{1,3}(?:/\d{4})?"),
+    re.compile(r"\bLei\s+Complementar\s+n?\.?\s*\d{1,3}(?:/\d{4})?"),
+    re.compile(r"\bLei\s+(?:n\.?\s*)?\d{1,3}(?:\.\d{3})+(?:/\d{4})?"),
+    re.compile(r"\b(?:LC|EC)\s*n?\s*\.?\s*\d{1,3}/\d{4}"),
+    re.compile(r"\bPL\s+\d[\d.]*(?:/\d{4})?"),
+    re.compile(r"\bart\.?\s*\d+", re.IGNORECASE),
+]
+
+
+def _extrair_entidades(corpo_html: str) -> list:
+    """Extrai entidades citáveis (leis, LC/EC, PL, art., órgãos) do corpo do artigo."""
+    texto = limpar_html(corpo_html or "")
+    encontradas, vistas = [], set()
+    for rx in _RE_ENTIDADES:
+        for m in rx.findall(texto):
+            chave = m.lower().strip()
+            if chave not in vistas:
+                vistas.add(chave)
+                encontradas.append(m.strip())
+    for orgao in _ORGAOS:
+        if re.search(rf"\b{re.escape(orgao)}\b", texto) and orgao.lower() not in vistas:
+            vistas.add(orgao.lower())
+            encontradas.append(orgao)
+    return encontradas
 
 
 def limpar_html(texto: str) -> str:
     return re.sub(r"<[^>]+>", "", texto).strip()
 
 
-def gerar_palavras_chave(titulo: str, tema: str) -> str:
+def gerar_palavras_chave(titulo: str, tema: str, corpo_html: str = None) -> str:
     texto = f"{titulo} {tema}".lower()
     texto = re.sub(r"[^\w\s]", " ", texto)
     palavras = [w for w in texto.split() if len(w) > 3 and w not in STOPWORDS]
@@ -47,7 +82,15 @@ def gerar_palavras_chave(titulo: str, tema: str) -> str:
         if p not in vistas:
             vistas.add(p)
             unicas.append(p)
-    return ", ".join(unicas[:MAX_KEYWORDS])
+    # Camada 2 GEO: entidades reais do corpo têm vaga garantida no fim da lista
+    entidades = _extrair_entidades(corpo_html)[:5] if corpo_html else []
+    resultado, vistos_ci = [], set()
+    for item in unicas[:max(0, MAX_KEYWORDS - len(entidades))] + entidades:
+        chave = item.lower()
+        if chave not in vistos_ci:
+            vistos_ci.add(chave)
+            resultado.append(item)
+    return ", ".join(resultado[:MAX_KEYWORDS])
 
 
 def validar_titulo(titulo: str, blog_nome: str) -> str:
@@ -90,8 +133,8 @@ def main():
     # mas o título completo passa a viver em <title>, <h1>, capa, cards e indice.json.
     log.info(f"Title ({len(titulo_ok + ' | ' + blog_nome)} chars): {titulo_ok} | {blog_nome}")
 
-    # 2. Gerar palavras-chave
-    palavras_chave = gerar_palavras_chave(titulo_ok, artigo.get("tema_nome", ""))
+    # 2. Gerar palavras-chave (Camada 2: com entidades reais do corpo)
+    palavras_chave = gerar_palavras_chave(titulo_ok, artigo.get("tema_nome", ""), artigo.get("conteudo", ""))
     artigo["palavras_chave"] = palavras_chave
     log.info(f"Keywords: {palavras_chave}")
 

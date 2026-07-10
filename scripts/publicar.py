@@ -202,7 +202,8 @@ def gerar_html_artigo(artigo: dict, config_blog: dict, imagem_url: str = "", ima
     nome_blog = config_blog.get("nome", "SAFIE Blog")
 
     bloco_imagem = (
-        f'<img class="artigo-capa" src="{imagem_rel}" alt="{artigo["titulo"]}" '
+        f'<img class="artigo-capa" src="{imagem_rel}" '
+        f'alt="{artigo["titulo"]} — capa ilustrativa do artigo sobre {artigo.get("tema_nome", "")}" '
         f'width="1200" height="630" loading="lazy">'
         if imagem_rel else ""
     )
