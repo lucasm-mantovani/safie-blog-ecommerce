@@ -6,6 +6,7 @@
 
 ## Artigos
 
+- [Direito do Consumidor no E-commerce: o que muda](https://ecommerce.safie.blog.br/artigos/2026-07-13-direito-do-consumidor-no-e-commerce-o-que-muda): Nas compras realizadas fora do estabelecimento comercial, incluindo lojas virtuais, o consumidor tem 7 dias corridos para desistir do contrato sem justificativa, conforme o art
 - [Shein e o IPO de Hong Kong: impacto no Brasil](https://ecommerce.safie.blog.br/artigos/2026-07-10-shein-e-o-ipo-de-hong-kong-impacto-no-brasil): O IPO da Shein em Hong Kong, após tentativas frustradas em Londres e Nova York, consolida a empresa como protagonista global do cross-border e reacende o debate sobre tributação de importações de baix
 - [Brinquedos com IA: riscos para marketplaces](https://ecommerce.safie.blog.br/artigos/2026-07-08-brinquedos-com-ia-riscos-para-marketplaces): O governo federal identificou riscos sérios em brinquedos com inteligência artificial vendidos no Brasil, incluindo manipulação emocional de crianças e coleta irregular de dados pessoais
 - [Tributação no E-commerce: FOT e ICMS no RJ](https://ecommerce.safie.blog.br/artigos/2026-07-08-tributacao-no-e-commerce-fot-e-icms-no-rj): A Secretaria de Fazenda do Rio de Janeiro publicou nova consulta tributária restringindo a aplicação da não cumulatividade do Fundo de Combate à Pobreza (FOT), gerando mais insegurança jurídica para c
